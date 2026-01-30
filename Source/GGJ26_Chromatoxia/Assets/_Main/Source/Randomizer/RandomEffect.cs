@@ -5,7 +5,7 @@ public enum EffectType
     Mutation,
     Map
 }
-
+    
 public abstract class RandomEffect : ScriptableObject
 {
     public string effectName;

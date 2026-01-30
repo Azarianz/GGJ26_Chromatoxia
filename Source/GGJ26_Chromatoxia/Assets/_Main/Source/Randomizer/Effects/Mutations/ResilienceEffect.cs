@@ -15,6 +15,6 @@ public class ResilienceEffect : RandomEffect
 
     public override void Apply(GameModifiers ctx, int stacks)
     {
-        ctx.enemyHpMult = 1f + hpIncreasePerStack * stacks;
+        ctx.enemyHpMult *= 1f + hpIncreasePerStack * stacks;
     }
 }

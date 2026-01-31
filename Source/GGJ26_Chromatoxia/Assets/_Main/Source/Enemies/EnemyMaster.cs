@@ -1,16 +1,18 @@
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class EnemyMaster : MonoBehaviour
 {
     [Header("Base Stats")]
-    [SerializeField] protected int maxHP = 50;
-    [SerializeField] protected float moveSpeed = 3f;
+    [SerializeField] private int maxHP = 50;
+    [SerializeField] public float moveSpeed = 3f;
 
     [Header("Combat")]
     [SerializeField] protected GameObject hitbox;
 
     protected int currentHP;
-    protected Transform player;
+    public Transform player;
+    
 
     public virtual void Awake()
     {
@@ -53,5 +55,11 @@ public class EnemyMaster : MonoBehaviour
     protected virtual void Die()
     {
         Destroy(gameObject);
+    }
+
+    public int stopSpeed(int iamspeed)
+    {
+        moveSpeed = iamspeed;
+        return iamspeed;
     }
 }

@@ -14,6 +14,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private float maxSpawnDistance = 10f;
 
     private float spawnTimer;
+    [SerializeField] int timeToLive;
     private void Awake()
     {
         
@@ -24,10 +25,11 @@ public class EnemyManager : MonoBehaviour
 
         spawnTimer += Time.deltaTime;
 
-        if (spawnTimer >= spawnRate)
+        if (spawnTimer >= spawnRate && timeToLive <= 0)
         {
             SpawnEnemy();
             spawnTimer = 0f;
+            timeToLive -= 1;
         }
     }
 

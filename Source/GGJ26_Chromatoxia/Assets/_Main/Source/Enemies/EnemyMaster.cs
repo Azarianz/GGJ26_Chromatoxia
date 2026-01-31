@@ -22,7 +22,7 @@ public class EnemyMaster : MonoBehaviour
     // Hitbox Callback
     // =========================
 
-    public virtual void OnHitboxTriggerEnter(Collider2D other)
+    public virtual void OnHitboxTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {

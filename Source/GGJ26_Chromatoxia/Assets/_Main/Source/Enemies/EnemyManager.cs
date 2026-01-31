@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
@@ -13,7 +14,10 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private float maxSpawnDistance = 10f;
 
     private float spawnTimer;
-
+    private void Awake()
+    {
+        
+    }
     void Update()
     {
         if (player == null || enemyPrefabs.Count == 0) return;

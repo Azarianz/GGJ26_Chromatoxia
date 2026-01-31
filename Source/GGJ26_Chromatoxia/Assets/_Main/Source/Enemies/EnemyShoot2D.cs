@@ -5,7 +5,7 @@ public class EnemyShoot2D : MonoBehaviour
     [Header("Shooting")]
     public GameObject projectilePrefab;
     public float projectileSpeed = 8f;
-    public float fireRate = 1f; // seconds between shots
+    public float fireRate = 1f;
 
     [Header("Targeting")]
     public string playerTag = "Player";
@@ -20,24 +20,27 @@ public class EnemyShoot2D : MonoBehaviour
         if (playerObj != null)
             player = playerObj.transform;
         else
-            Debug.LogError("EnemyShoot2D: No Player found with tag " + playerTag);
+            Debug.LogError("EnemyShoot3D: No Player found with tag " + playerTag);
     }
 
- 
     public void Shoot()
     {
+        if (player == null) return;
+
         GameObject bullet = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 
-        Vector2 direction = (player.position - transform.position).normalized;
+        // Direction ONLY on X and Z
+        Vector3 direction = player.position - transform.position;
+        direction.y = 0f; // ignore vertical difference
+        direction.Normalize();
 
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
         {
             rb.velocity = direction * projectileSpeed;
         }
 
-        // Optional: rotate bullet to face direction
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
+        // Rotate bullet to face movement direction
+        bullet.transform.rotation = Quaternion.LookRotation(direction);
     }
 }

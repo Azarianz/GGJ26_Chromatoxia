@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7597681234053469481}
   - component: {fileID: 4561542196348368802}
   - component: {fileID: 5422342324657390081}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: enemyPrototype
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,8 +179,10 @@ MonoBehaviour:
   separationStrength: 1.5
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   player: {fileID: 0}
+  hitIndicator: {fileID: 6812538855334322730}
+  dm: {fileID: 0}
 --- !u!1 &6812538855334322730
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,9 +193,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5838954368840955685}
   - component: {fileID: 9153165039414267939}
-  - component: {fileID: 632616589248007309}
-  - component: {fileID: 7977369234504527078}
-  m_Layer: 0
+  - component: {fileID: 4744009444411978022}
+  m_Layer: 6
   m_Name: HitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,42 +268,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &632616589248007309
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6812538855334322730}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
---- !u!114 &7977369234504527078
+--- !u!114 &4744009444411978022
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -311,7 +277,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6812538855334322730}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4640dc97be6a71e46962f97adf23378d, type: 3}
+  m_Script: {fileID: 11500000, guid: 14bcde4aeef07544cbf20558c9a1a3de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmt: 5
+  damageDistance: 1
+  damageAmount: 10
+  damageCooldown: 1
+  knockbackForce: 15

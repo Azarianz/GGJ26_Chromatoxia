@@ -4,13 +4,53 @@ using UnityEngine;
 
 public class bulletScript : MonoBehaviour
 {
-    [SerializeField] float damageAmt;
-    private void OnTriggerEnter2D(Collider2D collision) 
+    [SerializeField] private int damageAmount = 10;
+    [Header("Knockback")]
+    [SerializeField] private float knockbackForce = 6f;
+    [SerializeField] private float damageDistance = 1f;
+
+    private void Update()
     {
-        if (collision.gameObject.tag == "Player")
+        TryDamagePlayer(GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>());
+    }
+    void TryDamagePlayer(Transform player)
+    {
+        if (player == null) return;
+
+        Vector3 playerPos = player.position;
+        Vector3 enemyPos = this.transform.position;
+
+        playerPos.y = 0f;
+        enemyPos.y = 0f;
+
+        float distance = Vector3.Distance(playerPos, enemyPos);
+
+        if (distance <= damageDistance)
         {
-            collision.GetComponent<PlayerController>().TakeOxygenDamage(damageAmt);
+            ApplyDamage(player);
+            ApplyKnockback(player);
             Destroy(gameObject);
+           
         }
     }
+
+    void ApplyDamage(Transform player)
+    {
+        player.GetComponent<PlayerController>()
+              ?.TakeOxygenDamage(damageAmount);
+    }
+
+
+void ApplyKnockback(Transform player)
+{
+    Rigidbody playerRb = player.GetComponent<Rigidbody>();
+    if (playerRb == null) return;
+
+    Vector3 dir = (player.position - this.transform.position);
+    dir.y = 0f;
+    dir.Normalize();
+
+    playerRb.AddForce(dir * knockbackForce, ForceMode.Impulse);
+}
+
 }

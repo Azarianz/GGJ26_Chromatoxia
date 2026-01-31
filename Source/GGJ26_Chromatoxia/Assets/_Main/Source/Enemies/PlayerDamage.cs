@@ -7,16 +7,25 @@ public class PlayerDamage : MonoBehaviour
     [SerializeField] private int damageAmount = 10;
     [SerializeField] private float damageCooldown = 1f;
 
+    [Header("Knockback")]
+    [SerializeField] private float knockbackForce = 6f;
+
     private float lastDamageTime;
+    private Transform enemyRoot;
 
-    // Call this from Enemy script
-    public void TryDamagePlayer(Transform enemy)
+    void Awake()
     {
-        if (enemy == null) return;
+        // Cache enemy root transform
+        enemyRoot = transform.root;
+    }
 
-        // XZ-only distance
-        Vector3 playerPos = transform.position;
-        Vector3 enemyPos = enemy.position;
+    // Called from Enemy script
+    public void TryDamagePlayer(Transform player)
+    {
+        if (player == null) return;
+
+        Vector3 playerPos = player.position;
+        Vector3 enemyPos = enemyRoot.position;
 
         playerPos.y = 0f;
         enemyPos.y = 0f;
@@ -25,15 +34,27 @@ public class PlayerDamage : MonoBehaviour
 
         if (distance <= damageDistance && Time.time >= lastDamageTime + damageCooldown)
         {
-            TakeDamage(damageAmount);
+            ApplyDamage(player);
+            ApplyKnockback(player);
             lastDamageTime = Time.time;
         }
     }
 
-    void TakeDamage(int amount)
+    void ApplyDamage(Transform player)
     {
-        Debug.Log($"Player took {amount} damage");
-        // TODO: reduce HP, trigger UI, etc.
+        player.GetComponent<PlayerController>()
+              ?.TakeOxygenDamage(damageAmount);
+    }
+
+    void ApplyKnockback(Transform player)
+    {
+        Rigidbody playerRb = player.GetComponent<Rigidbody>();
+        if (playerRb == null) return;
+
+        Vector3 dir = (player.position - enemyRoot.position);
+        dir.y = 0f;
+        dir.Normalize();
+
+        playerRb.AddForce(dir * knockbackForce, ForceMode.Impulse);
     }
 }
-

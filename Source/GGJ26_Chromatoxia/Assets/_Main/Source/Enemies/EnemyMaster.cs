@@ -24,6 +24,18 @@ public class EnemyMaster : MonoBehaviour
     }
 
     // =========================
+    // Hitbox Callback
+    // =========================
+
+    public virtual void OnHitboxTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log($"{name} hit the player");
+        }
+    }
+
+    // =========================
     // Core
     // =========================
 

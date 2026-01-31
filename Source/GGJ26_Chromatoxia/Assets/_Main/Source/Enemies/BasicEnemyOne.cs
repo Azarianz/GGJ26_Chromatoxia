@@ -9,7 +9,7 @@ public class BasicEnemyOne : MonoBehaviour
         enemyMaster = GetComponentInParent<EnemyMaster>();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter(Collider other)
     {
         if (enemyMaster != null)
         {

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class enemyHitbox : MonoBehaviour
 {
+    [SerializeField] float damageAmt;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
@@ -17,6 +18,7 @@ public class enemyHitbox : MonoBehaviour
             if (enemy != null)
             {
                 enemy.OnHitboxTriggerEnter(collision);
+                collision.GetComponent<PlayerController>().currentOxygen -= damageAmt;
             }
             else
             {

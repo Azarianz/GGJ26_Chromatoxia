@@ -29,8 +29,10 @@ public class PlayerController : MonoBehaviour
     public float toxinFillRate = 10f; // per second
     float currentToxin;
 
+    // Movement
+    private Rigidbody2D rb;
+    private Vector2 movementInput;
 
-    // Start is called before the first frame update
     void Start()
     {
         void Start()
@@ -70,7 +72,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         UpdateOxygen();
@@ -108,3 +109,4 @@ public class PlayerController : MonoBehaviour
         transform.position += dir * moveSpeed * Time.deltaTime;
     }
 }
+

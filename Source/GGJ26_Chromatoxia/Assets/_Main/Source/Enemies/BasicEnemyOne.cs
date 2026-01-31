@@ -13,7 +13,7 @@ public class BasicEnemyOne : MonoBehaviour
     {
         if (enemyMaster != null)
         {
-            enemyMaster.OnHitboxTriggerEnter(other);
+            //enemyMaster.OnHitboxTriggerEnter(other);
         }
     }
 }

@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using Unity.VisualScripting;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
@@ -14,40 +13,42 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private float maxSpawnDistance = 10f;
 
     private float spawnTimer;
-    [SerializeField] int timeToLive;
-    private void Awake()
-    {
-        
-    }
+    [SerializeField] private int timeToLive;
+
     void Update()
     {
-        if (player == null || enemyPrefabs.Count == 0) return;
-
         spawnTimer += Time.deltaTime;
 
-        if (spawnTimer >= spawnRate && timeToLive <= 0)
+        if (spawnTimer >= spawnRate && timeToLive > 0)
         {
             SpawnEnemy();
             spawnTimer = 0f;
-            timeToLive -= 1;
+            timeToLive--;
         }
     }
 
-    void SpawnEnemy()
-    {
-        Vector2 spawnPos = GetRandomSpawnPosition();
-        GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+   void SpawnEnemy()
+{
+    Vector3 spawnPos = GetRandomSpawnPositionXZ();
+    GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
 
-        Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-    }
+    Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+}
 
-    Vector2 GetRandomSpawnPosition()
-    {
-        Vector2 randomDirection = Random.insideUnitCircle.normalized;
-        float distance = Random.Range(minSpawnDistance, maxSpawnDistance);
+Vector3 GetRandomSpawnPositionXZ()
+{
+    Vector2 randomDirection2D = Random.insideUnitCircle.normalized;
+    float distance = Random.Range(minSpawnDistance, maxSpawnDistance);
 
-        return (Vector2)player.position + randomDirection * distance;
-    }
+    Vector3 offset = new Vector3(
+        randomDirection2D.x,
+        0f,                     // 🔒 Y axis locked
+        randomDirection2D.y
+    );
+
+    return player.position + offset * distance;
+}
+
 
     // =========================
     // Debug

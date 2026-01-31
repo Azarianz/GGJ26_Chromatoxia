@@ -17,7 +17,7 @@ public class enemyHitbox : MonoBehaviour
 
             if (enemy != null)
             {
-                enemy.OnHitboxTriggerEnter(collision);
+                //enemy.OnHitboxTriggerEnter(collision);
                 collision.GetComponent<PlayerController>().TakeOxygenDamage(damageAmt);
             }
             else

@@ -24,18 +24,6 @@ public class EnemyMaster : MonoBehaviour
     }
 
     // =========================
-    // Hitbox Callback
-    // =========================
-
-    public virtual void OnHitboxTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log($"{name} hit the player");
-        }
-    }
-
-    // =========================
     // Core
     // =========================
 
@@ -43,39 +31,38 @@ public class EnemyMaster : MonoBehaviour
     {
         if (player == null) return;
 
-        Vector2 moveDir = (player.position - transform.position).normalized;
-        Vector2 separationDir = GetSeparationDirection();
+        // Direction to player (XZ only)
+        Vector3 toPlayer = player.position - transform.position;
+        toPlayer.y = 0f;
 
-        Vector2 finalDir = (moveDir + separationDir).normalized;
+        Vector3 separationDir = GetSeparationDirectionXZ();
 
-        transform.position += (Vector3)finalDir * moveSpeed * Time.deltaTime;
-    }
-    public virtual void OnHitboxTriggerEnter(Collider2D other)
-    { if (other.CompareTag("Player"))
-        {
-            Debug.Log($"{name} hit the player"); 
-        }
+        Vector3 finalDir = (toPlayer.normalized + separationDir).normalized;
+
+        transform.position += finalDir * moveSpeed * Time.deltaTime;
     }
 
-    Vector2 GetSeparationDirection()
+    Vector3 GetSeparationDirectionXZ()
     {
-        Collider2D[] neighbors = Physics2D.OverlapCircleAll(
+        Collider[] neighbors = Physics.OverlapSphere(
             transform.position,
             separationRadius,
             enemyLayer
         );
 
-        Vector2 separation = Vector2.zero;
+        Vector3 separation = Vector3.zero;
         int count = 0;
 
-        foreach (Collider2D col in neighbors)
+        foreach (Collider col in neighbors)
         {
             if (col.transform == transform) continue;
 
-            Vector2 diff = (Vector2)(transform.position - col.transform.position);
+            Vector3 diff = transform.position - col.transform.position;
+            diff.y = 0f;
+
             float distance = diff.magnitude;
 
-            if (distance > 0)
+            if (distance > 0f)
             {
                 separation += diff.normalized / distance;
                 count++;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,10 @@ public class GameUIManager : MonoBehaviour
 
     [Header("Enemy UI")]
     public Slider waveSlider;
+
+    [Header("Randomizer UI")]
+    public GameObject randomizerListParent;
+    public GameObject randomizerEffectCard;
 
     private void Awake()
     {
@@ -63,5 +68,10 @@ public class GameUIManager : MonoBehaviour
     {
         if (toxinSlider != null)
             toxinSlider.value = value;
+    }
+
+    public void DrawRandomizer(List<RandomEffect> effectsToDraw)
+    {
+
     }
 }

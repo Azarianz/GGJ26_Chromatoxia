@@ -8,8 +8,14 @@ public enum EffectType
     
 public abstract class RandomEffect : ScriptableObject
 {
+    [Header("Effect Info")]
     public string effectName;
+    public string effectDescription;
+    public Sprite effectIcon;
+
+    [Header("Effect Type")]
     public EffectType type;
+    public bool isPositive;
 
     [Header("Optional")]
     public bool stackable = false;

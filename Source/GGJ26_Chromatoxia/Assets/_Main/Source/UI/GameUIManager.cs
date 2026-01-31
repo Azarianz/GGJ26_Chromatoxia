@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro; // <-- add this if you use TMP_Text
 
 public class GameUIManager : MonoBehaviour
 {
-    // Singleton instance
     public static GameUIManager Instance { get; private set; }
 
     [Header("Player UI")]
@@ -16,8 +16,16 @@ public class GameUIManager : MonoBehaviour
     public Slider waveSlider;
 
     [Header("Randomizer UI")]
+    public GameObject randomizerUI;
     public GameObject randomizerListParent;
     public GameObject randomizerEffectCard;
+
+    [Header("Inventory UI (6 Slots)")]
+    public Image[] inventorySlotIcons = new Image[6];      // assign left->right
+    public TMP_Text[] inventorySlotCounts = new TMP_Text[6]; // optional (ammo/uses)
+
+    [Range(0f, 1f)]
+    public float emptySlotAlpha = 0f;
 
     private void Awake()
     {
@@ -26,7 +34,6 @@ public class GameUIManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
     }
 
@@ -72,6 +79,41 @@ public class GameUIManager : MonoBehaviour
 
     public void DrawRandomizer(List<RandomEffect> effectsToDraw)
     {
+        // your existing randomizer drawing here
+    }
 
+    // ===== Inventory Draw API =====
+    public void DrawInventory(InventorySlot[] slots)
+    {
+        if (slots == null) return;
+
+        int count = Mathf.Min(6, slots.Length);
+
+        for (int i = 0; i < count; i++)
+        {
+            var icon = inventorySlotIcons[i];
+            var text = inventorySlotCounts[i];
+            var slot = slots[i];
+
+            if (slot == null || slot.IsEmpty)
+            {
+                // Hide icon
+                icon.sprite = null;
+                icon.color = new Color(1, 1, 1, 0);
+
+                // Clear count
+                if (text) text.text = "";
+            }
+            else
+            {
+                // Show icon
+                icon.sprite = slot.item.icon;
+                icon.color = Color.white;
+
+                // Update count
+                if (text)
+                    text.text = slot.current.ToString();
+            }
+        }
     }
 }

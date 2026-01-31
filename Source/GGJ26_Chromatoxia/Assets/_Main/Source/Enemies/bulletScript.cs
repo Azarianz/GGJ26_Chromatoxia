@@ -9,7 +9,7 @@ public class bulletScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.GetComponent<PlayerController>().currentOxygen -= damageAmt;
+            collision.GetComponent<PlayerController>().TakeOxygenDamage(damageAmt);
             Destroy(gameObject);
         }
     }

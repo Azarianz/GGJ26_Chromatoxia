@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     void InputHandler()
     {
         float x = Input.GetAxisRaw("Horizontal"); // A/D
-        float z = Input.GetAxisRaw("Vertical");   // W/S
+        float z = Input.GetAxisRaw("Vertical");   // W/S 
 
         Vector3 dir = new Vector3(x, 0f, z);
 

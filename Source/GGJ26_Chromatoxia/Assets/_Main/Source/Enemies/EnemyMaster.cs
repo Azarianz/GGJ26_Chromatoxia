@@ -12,7 +12,7 @@ public class EnemyMaster : MonoBehaviour
     [SerializeField] private float separationRadius = 1.2f;
     [SerializeField] private float separationStrength = 1.5f;
     [SerializeField] private LayerMask enemyLayer;
-
+    [SerializeField] Animator enemyAnim;
    
     public Transform player;
 
@@ -37,6 +37,10 @@ public class EnemyMaster : MonoBehaviour
         Vector3 separationDir = GetSeparationDirectionXZ();
 
         Vector3 finalDir = (toPlayer.normalized + separationDir).normalized;
+
+        Vector3 scale = transform.localScale;
+        scale.x = Mathf.Sign(player.position.x - transform.position.x) * Mathf.Abs(scale.x);
+        transform.localScale = scale;
 
         transform.position += finalDir * moveSpeed * Time.deltaTime;
     }

@@ -6,6 +6,7 @@ public class enemyDamage : MonoBehaviour
 {
     public float currentHP;
     public float maxHP;
+    [SerializeField] Animator animDam;
     // Start is called before th
     //
     //
@@ -26,7 +27,7 @@ public class enemyDamage : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHP -= damage;
-
+        animDam.SetTrigger("enemDamg");
         if (currentHP <= 0)
             Destroy(gameObject);
     }

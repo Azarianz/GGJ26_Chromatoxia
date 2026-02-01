@@ -8,8 +8,8 @@ public class GameManager : MonoBehaviour
     public static GameManager I { get; private set; }
 
     [Header("Game Jam Toggles")]
-    [SerializeField] bool pauseTimeOnEnd = true; // if true, Time.timeScale = 0 on end
-    [SerializeField] bool autoResetOnSceneLoad = true; // fixes "ended" carrying into next stage
+    [SerializeField] bool pauseTimeOnEnd = true;
+    [SerializeField] bool autoResetOnSceneLoad = true;
 
     bool ended;
 
@@ -23,8 +23,6 @@ public class GameManager : MonoBehaviour
 
         I = this;
 
-        // If this object exists in multiple scenes, the first one stays and others get destroyed.
-        // So we *must* reset between scenes.
         if (autoResetOnSceneLoad)
             SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -39,8 +37,6 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Ensures F1/debug win/lose works in every new room,
-        // and prevents staying "ended" after returning to graph / loading next stage.
         ResetForNewRoom();
     }
 
@@ -52,6 +48,16 @@ public class GameManager : MonoBehaviour
 
     void End(GameEndType type, string reason)
     {
+        if (type == GameEndType.Win)
+        {
+            if (GameModifiers.Instance != null)
+            {
+                GameModifiers.Instance.survivalTime += 10f;
+                GameModifiers.Instance.enemySpeedMult += 0.1f;
+                GameModifiers.Instance.spawnMult += 0.15f;
+            }
+        }
+
         if (ended) return;
         ended = true;
 
@@ -61,7 +67,22 @@ public class GameManager : MonoBehaviour
         if (GameUIManager.Instance != null)
             GameUIManager.Instance.ShowGameEnd(type, reason);
 
-        Debug.Log($"[GameManager] {type}" + (string.IsNullOrEmpty(reason) ? "" : $" ({reason})"));
+        Debug.Log($"[GameManager] {type}" +
+                  (string.IsNullOrEmpty(reason) ? "" : $" ({reason})"));
+    }
+
+    // =====================
+    // Game Over Menu Button
+    // =====================
+    public void OnGameOverMenuClicked()
+    {
+        Time.timeScale = 1f;
+        ended = false;
+
+        if (RunManager.I != null)
+            RunManager.I.DestroyBootstrap(); // optional
+
+        SceneManager.LoadScene("MainMenu");
     }
 
     // =====================
@@ -76,8 +97,6 @@ public class GameManager : MonoBehaviour
     public void ResetForNewRoom()
     {
         ended = false;
-
-        // Always unpause as safety (prevents "stuck timescale 0" bugs).
         Time.timeScale = 1f;
 
         if (GameUIManager.Instance != null)

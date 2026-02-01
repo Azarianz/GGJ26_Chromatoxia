@@ -52,9 +52,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  armorMaxHP: 50
+  armorMaxHP: 40
   maxOxygen: 100
-  oxygenDrainRate: 0.5
+  oxygenDrainRate: 0.85
   maxToxin: 100
   toxinFillRate: 10
   animator: {fileID: 1177987827723563326}

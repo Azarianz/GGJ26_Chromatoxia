@@ -6,70 +6,96 @@ public class EnemyManager : MonoBehaviour
     [Header("Player")]
     [SerializeField] private Transform player;
 
-    [Header("Spawning")]
-    [SerializeField] private List<GameObject> enemyPrefabs = new List<GameObject>();
-    [SerializeField] private float spawnRate = 2f;
-    [SerializeField] private float minSpawnDistance = 5f;
-    [SerializeField] private float maxSpawnDistance = 10f;
+    [Header("Enemy Prefabs")]
+    [SerializeField] private List<GameObject> enemyPrefabs = new();
 
+    [Header("Spawn Timing")]
+    [SerializeField] private float spawnRate = 1.25f;
     private float spawnTimer;
-    [SerializeField] private float timeToLive;
+
+    [Header("Spawn Ring (circle around player)")]
+    [SerializeField] private float minSpawnRadius = 8f;
+    [SerializeField] private float maxSpawnRadius = 12f;
+
+    [Header("Burst")]
+    [SerializeField] private int minPerBurst = 2;
+    [SerializeField] private int maxPerBurst = 5;
+
+    [Header("Wave Timer (seconds)")]
+    [SerializeField] private float timeToLive = 30f;
+    private float timeLeft;
 
     private void Start()
     {
-        GameUIManager.Instance.InitWave(timeToLive, timeToLive);
+        timeLeft = timeToLive;
+
+        if (GameModifiers.Instance != null)
+            spawnRate = Mathf.Max(0.15f, spawnRate - GameModifiers.Instance.spawnMult);
+
+        if (GameUIManager.Instance != null)
+            GameUIManager.Instance.InitWave(timeToLive, timeToLive);
     }
 
-    void Update()
+    private void Update()
     {
-        spawnTimer += Time.deltaTime;
+        if (!player || enemyPrefabs == null || enemyPrefabs.Count == 0) return;
 
-        if (spawnTimer >= spawnRate && timeToLive > 0)
+        // countdown per second
+        timeLeft -= Time.deltaTime;
+        timeLeft = Mathf.Max(0f, timeLeft);
+
+        if (GameUIManager.Instance != null)
+            GameUIManager.Instance.UpdateWave(timeLeft);
+
+        if (timeLeft <= 0f)
         {
-            SpawnEnemy();
-            spawnTimer = 0f;
-            timeToLive--;
-        }
-        GameUIManager.Instance.UpdateWave(timeToLive);
-
-        if (timeToLive < 0f)
             GameManager.I.Win("");
+            return;
+        }
+
+        // spawn burst timer
+        spawnTimer += Time.deltaTime;
+        if (spawnTimer >= spawnRate)
+        {
+            spawnTimer = 0f;
+            SpawnBurst();
+        }
     }
 
-   void SpawnEnemy()
-{
-    Vector3 spawnPos = GetRandomSpawnPositionXZ();
-    GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
-
-    Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-}
-
-Vector3 GetRandomSpawnPositionXZ()
-{
-    Vector2 randomDirection2D = Random.insideUnitCircle.normalized;
-    float distance = Random.Range(minSpawnDistance, maxSpawnDistance);
-
-    Vector3 offset = new Vector3(
-        randomDirection2D.x,
-        0f,                     // 🔒 Y axis locked
-        randomDirection2D.y
-    );
-
-    return player.position + offset * distance;
-}
-
-
-    // =========================
-    // Debug
-    // =========================
-    void OnDrawGizmosSelected()
+    private void SpawnBurst()
     {
-        if (player == null) return;
+        int count = Random.Range(minPerBurst, maxPerBurst + 1);
+
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 spawnPos = GetRandomPointOnRing(player.position, minSpawnRadius, maxSpawnRadius);
+            GameObject prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+            Instantiate(prefab, spawnPos, Quaternion.identity);
+        }
+    }
+
+    private Vector3 GetRandomPointOnRing(Vector3 center, float minR, float maxR)
+    {
+        // angle-based direction = no bias, no zero vector
+        float angle = Random.Range(0f, Mathf.PI * 2f);
+        Vector3 dir = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)); // unit circle on XZ
+
+        float radius = Random.Range(minR, maxR);
+        Vector3 p = center + dir * radius;
+
+        // lock Y (spawn on your floor height)
+        p.y = center.y;
+        return p;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (!player) return;
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(player.position, minSpawnDistance);
+        Gizmos.DrawWireSphere(player.position, minSpawnRadius);
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(player.position, maxSpawnDistance);
+        Gizmos.DrawWireSphere(player.position, maxSpawnRadius);
     }
 }

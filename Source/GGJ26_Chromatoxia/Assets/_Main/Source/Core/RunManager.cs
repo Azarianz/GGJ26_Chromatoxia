@@ -23,11 +23,19 @@ public class RunManager : MonoBehaviour
 
     void Awake()
     {
-        if (I != null) { Destroy(gameObject); return; }
+        if (I != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         I = this;
         DontDestroyOnLoad(gameObject);
     }
 
+    // =====================
+    // Run Lifecycle
+    // =====================
     public void NewRun(int newSeed)
     {
         hasRun = true;
@@ -55,13 +63,36 @@ public class RunManager : MonoBehaviour
         if (!clearedNodeIds.Contains(currentNodeId))
             clearedNodeIds.Add(currentNodeId);
 
-        // NOW we unlock the next selectable step
         currentStep = Mathf.Max(currentStep, pendingNextStepAfterClear);
 
-        // optional: clear current node pointer
         currentNodeId = "";
         currentNodeSceneName = "";
     }
 
     public bool IsCleared(string nodeId) => clearedNodeIds.Contains(nodeId);
+
+    // =====================
+    // BOOTSTRAP DESTRUCTION
+    // =====================
+
+    /// <summary>
+    /// Destroys the entire RunBootstrap root.
+    /// Call this when returning to Main Menu or abandoning a run.
+    /// </summary>
+    public void DestroyBootstrap()
+    {
+        // Safety: unpause in case we died during pause
+        Time.timeScale = 1f;
+
+        // Find the top-level Bootstrap root
+        Transform root = transform;
+        while (root.parent != null)
+            root = root.parent;
+
+        Debug.Log($"[RunManager] Destroying Bootstrap root: {root.name}");
+
+        Destroy(root.gameObject);
+
+        I = null;
+    }
 }

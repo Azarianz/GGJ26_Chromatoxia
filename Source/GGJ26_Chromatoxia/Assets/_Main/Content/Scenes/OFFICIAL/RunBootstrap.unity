@@ -4440,6 +4440,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1163800627}
   - component: {fileID: 1163800628}
+  - component: {fileID: 1163800629}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -4558,6 +4559,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1163800629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163800626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4506e732476f4ff4c9e95ddac8ef910f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicSource: {fileID: 1163800628}
+  mainMenuSceneName: MainMenu
+  menuMusic: {fileID: 8300000, guid: 0a0e0c6d81db90748914850c91d99dc3, type: 3}
+  gameplayTracks:
+  - {fileID: 8300000, guid: fb835dfd7fd5f814eaa4a9a772c5c2dd, type: 3}
+  - {fileID: 8300000, guid: 6368308bd6b96ab418fd4f60f28dcf9e, type: 3}
+  gameplaySceneNames:
+  - RunStart
+  - TutorialLevel
+  musicVolume: 0.8
+  loop: 1
+  rerollGameplayTrackOnEveryGameplaySceneLoad: 1
 --- !u!1 &1184487788
 GameObject:
   m_ObjectHideFlags: 0
@@ -4867,9 +4892,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainMenuManager, Assembly-CSharp
-        m_MethodName: OnStartClicked
+      - m_Target: {fileID: 725745363}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: OnGameOverMenuClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5678,7 +5703,7 @@ MonoBehaviour:
   lootDrawMult: 1
   dropBonus: 0
   oxygenDrainMult: 1
-  survivalTime: 30
+  survivalTime: 40
 --- !u!1 &1468851206
 GameObject:
   m_ObjectHideFlags: 0
@@ -5852,39 +5877,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3673087828305676896, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5063280420236156143, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5063280420236156143, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5063280420236156143, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5063280420236156143, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 804.95276
       objectReference: {fileID: 0}
     - target: {fileID: 5063280420236156143, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -225
       objectReference: {fileID: 0}
     - target: {fileID: 6914361998777767844, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6914361998777767844, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6914361998777767844, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 1114.9528
       objectReference: {fileID: 0}
     - target: {fileID: 6914361998777767844, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -225
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

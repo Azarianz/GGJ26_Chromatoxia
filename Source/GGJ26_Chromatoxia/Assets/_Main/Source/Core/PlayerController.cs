@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     [Header("Oxygen")]
     public float maxOxygen = 100f;
-    public float oxygenDrainRate = 0.25f; // per second
+    public float oxygenDrainRate = 0.85f; // per second
     public float currentOxygen { get; private set; }
 
     [Header("Toxins")]

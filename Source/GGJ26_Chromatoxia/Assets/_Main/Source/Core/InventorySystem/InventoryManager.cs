@@ -156,4 +156,25 @@ public class InventoryManager : MonoBehaviour
         if (idx < 0) return 0;
         return slots[idx].current;
     }
+
+    public void ResetInventory()
+    {
+        // Clear all slots
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i] == null)
+                slots[i] = new InventorySlot();
+            else
+                slots[i].Clear();
+        }
+
+        // Reset active slot
+        activeSlotIndex = -1;
+
+        // Notify listeners (WeaponManager, UI, etc.)
+        OnActiveSlotChanged?.Invoke(activeSlotIndex, null);
+
+        // Redraw UI
+        RedrawUI();
+    }
 }

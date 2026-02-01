@@ -1,7 +1,8 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     // =====================
     // Player Stats
@@ -14,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Oxygen")]
     public float maxOxygen = 100f;
-    public float oxygenDrainRate = 5f; // per second
+    public float oxygenDrainRate = 0.25f; // per second
     public float currentOxygen { get; private set; }
 
     [Header("Toxins")]
@@ -28,9 +29,14 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Vector2 movementInput;
 
-    void DrainOxygen()
+    void DrainOxygen(float val)
     {
-        TakeOxygenDamage(oxygenDrainRate * Time.deltaTime);
+        if (currentOxygen > 0)
+        {
+            currentOxygen = Mathf.Max(0, currentOxygen - val);
+            GameUIManager.Instance?.UpdateOxygen(currentOxygen);
+            return;
+        }
     }
 
     void InputHandler()
@@ -58,7 +64,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void TakeOxygenDamage(float amount)
+    public void RegisterDamage(float amount)
     {
         if (currentArmorHP > 0)
         {
@@ -76,6 +82,12 @@ public class PlayerController : MonoBehaviour
 
         currentToxin = Mathf.Min(maxToxin, currentToxin + amount);
         GameUIManager.Instance?.UpdateToxin(currentToxin);
+
+        if(currentToxin >= maxToxin)
+        {
+            // Player dies
+            GameManager.I.Lose("");
+        }
     }
 
     void Start()
@@ -92,9 +104,13 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        DrainOxygen();
+        DrainOxygen(oxygenDrainRate * Time.deltaTime);
         InputHandler();
     }
 
+    public void TakeDamage(int dmg)
+    {
+        RegisterDamage(dmg);
+    }
 }
 

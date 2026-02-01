@@ -45,7 +45,7 @@ public class bulletScript : MonoBehaviour
     void ApplyDamage(Transform player)
     {
         player.GetComponent<PlayerController>()
-              ?.TakeOxygenDamage(damageAmount);
+              ?.RegisterDamage(damageAmount);
     }
 
 

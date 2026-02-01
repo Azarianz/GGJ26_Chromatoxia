@@ -56,7 +56,7 @@ public class suicideEnemy : EnemyMaster
             Vector3.Distance(player.position, transform.position) <= stopDistance)
         {
             player.GetComponent<PlayerController>()
-                  .TakeOxygenDamage(damageAMt);
+                  .RegisterDamage(damageAMt);
         }
 
         GameObject obj = Instantiate(

@@ -20,13 +20,13 @@ public class EnemyMaster : MonoBehaviour, IDamageable
 
     public virtual void Awake()
     {
-        InitStat(GameModifiers.Instance.enemySpeedMult * moveSpeed);
+        InitStat();
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
-    public void InitStat(float speed)
+    public void InitStat()
     {
-        moveSpeed = speed;
+        moveSpeed = GameModifiers.Instance.enemySpeedMult * moveSpeed;
     }
 
     // =========================

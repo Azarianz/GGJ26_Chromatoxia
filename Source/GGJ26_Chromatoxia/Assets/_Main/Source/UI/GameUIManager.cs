@@ -72,6 +72,22 @@ public class GameUIManager : MonoBehaviour
         toxinSlider.value = current;
     }
 
+    public void InitWave(float maxWaveHealth, float currentWaveHealth)
+    {
+        if (!waveSlider) return;
+
+        waveSlider.minValue = 0;
+        waveSlider.maxValue = maxWaveHealth;
+        waveSlider.value = currentWaveHealth;
+    }
+
+    public void UpdateWave(float currentWave)
+    {
+        if (!waveSlider) return;
+
+        waveSlider.value = currentWave;
+    }
+
     public void UpdateArmor(float value)
     {
         if (armorSlider != null)

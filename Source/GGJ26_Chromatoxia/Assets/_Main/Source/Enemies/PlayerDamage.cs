@@ -43,7 +43,7 @@ public class PlayerDamage : MonoBehaviour
     void ApplyDamage(Transform player)
     {
         player.GetComponent<PlayerController>()
-              ?.TakeOxygenDamage(damageAmount);
+              ?.RegisterDamage(damageAmount);
     }
 
     void ApplyKnockback(Transform player)

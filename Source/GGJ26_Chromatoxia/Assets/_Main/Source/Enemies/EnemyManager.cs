@@ -13,7 +13,12 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private float maxSpawnDistance = 10f;
 
     private float spawnTimer;
-    [SerializeField] private int timeToLive;
+    [SerializeField] private float timeToLive;
+
+    private void Start()
+    {
+        GameUIManager.Instance.InitWave(timeToLive, timeToLive);
+    }
 
     void Update()
     {
@@ -25,6 +30,10 @@ public class EnemyManager : MonoBehaviour
             spawnTimer = 0f;
             timeToLive--;
         }
+        GameUIManager.Instance.UpdateWave(timeToLive);
+
+        if (timeToLive < 0f)
+            GameManager.I.Win("");
     }
 
    void SpawnEnemy()

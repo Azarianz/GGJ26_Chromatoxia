@@ -16,5 +16,12 @@ MonoBehaviour:
   displayName: Flamer
   type: 0
   icon: {fileID: -240706979, guid: c445d68ca8e795d479a8cd6989715622, type: 3}
+  weaponWorldSprite: {fileID: -240706979, guid: c445d68ca8e795d479a8cd6989715622, type: 3}
   maxCapacity: 200
   pickupRestoreAmount: 120
+  fireRate: 15
+  ammoPerShot: 1
+  projectilePrefab: {fileID: 4751719076011803161, guid: 41e5bf7a5a8d74f419aa8c71f1229cc2, type: 3}
+  projectileSpeed: 12
+  projectileLifetime: 0.55
+  damage: 1

@@ -16,5 +16,12 @@ MonoBehaviour:
   displayName: Shotgun
   type: 0
   icon: {fileID: 912502864, guid: c445d68ca8e795d479a8cd6989715622, type: 3}
+  weaponWorldSprite: {fileID: 912502864, guid: c445d68ca8e795d479a8cd6989715622, type: 3}
   maxCapacity: 40
   pickupRestoreAmount: 24
+  fireRate: 1.5
+  ammoPerShot: 1
+  projectilePrefab: {fileID: 4751719076011803161, guid: 0102e52591742ae4686eeddc6fec6aec, type: 3}
+  projectileSpeed: 40
+  projectileLifetime: 3
+  damage: 1

@@ -16,5 +16,12 @@ MonoBehaviour:
   displayName: Rocket
   type: 0
   icon: {fileID: -289394470, guid: c445d68ca8e795d479a8cd6989715622, type: 3}
+  weaponWorldSprite: {fileID: -289394470, guid: c445d68ca8e795d479a8cd6989715622, type: 3}
   maxCapacity: 12
   pickupRestoreAmount: 8
+  fireRate: 1
+  ammoPerShot: 1
+  projectilePrefab: {fileID: 4011017040828074396, guid: 5a27759972cadb14eafe9196b7cd1364, type: 3}
+  projectileSpeed: 40
+  projectileLifetime: 6
+  damage: 1

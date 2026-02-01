@@ -16,5 +16,12 @@ MonoBehaviour:
   displayName: Revolv
   type: 0
   icon: {fileID: -1187364710, guid: c445d68ca8e795d479a8cd6989715622, type: 3}
+  weaponWorldSprite: {fileID: -1187364710, guid: c445d68ca8e795d479a8cd6989715622, type: 3}
   maxCapacity: 60
   pickupRestoreAmount: 30
+  fireRate: 1.65
+  ammoPerShot: 1
+  projectilePrefab: {fileID: 4011017040828074396, guid: 782e8c9201a62bc408103bcec2f32e2a, type: 3}
+  projectileSpeed: 40
+  projectileLifetime: 3
+  damage: 1

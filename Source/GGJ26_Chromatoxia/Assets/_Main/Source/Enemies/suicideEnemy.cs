@@ -5,12 +5,14 @@ public class suicideEnemy : EnemyMaster
 {
     public float stopDistance;
     [SerializeField] float damageAMt;
+    [SerializeField] GameObject explodepart;
 
     bool isExploding = false;
 
     public override void Awake()
     {
         base.Awake();
+        StartCoroutine(AutoExplodeAfterTime(3f));
     }
 
     private void Update()
@@ -21,7 +23,7 @@ public class suicideEnemy : EnemyMaster
 
         if (distanceToPlayer < stopDistance)
         {
-            StartCoroutine(ExplodeAfterDelay());
+            StartCoroutine(ExplodeAfterDelay(1f));
         }
         else
         {
@@ -29,23 +31,41 @@ public class suicideEnemy : EnemyMaster
         }
     }
 
-    IEnumerator ExplodeAfterDelay()
+    IEnumerator AutoExplodeAfterTime(float time)
     {
+        yield return new WaitForSeconds(time);
+
+        if (!isExploding)
+        {
+            StartCoroutine(ExplodeAfterDelay(0f));
+        }
+    }
+
+    IEnumerator ExplodeAfterDelay(float delay)
+    {
+        if (isExploding) yield break;
+
         isExploding = true;
 
-        // OPTIONAL: stop movement completely
+        // Stop movement
         moveSpeed = 0;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(delay);
 
-        if (player != null)
+        if (player != null &&
+            Vector3.Distance(player.position, transform.position) <= stopDistance)
         {
             player.GetComponent<PlayerController>()
                   .TakeOxygenDamage(damageAMt);
         }
 
+        GameObject obj = Instantiate(
+            explodepart,
+            transform.position,
+            Quaternion.identity
+        );
+
+        obj.transform.SetParent(null);
         Destroy(gameObject);
     }
-
-    
 }

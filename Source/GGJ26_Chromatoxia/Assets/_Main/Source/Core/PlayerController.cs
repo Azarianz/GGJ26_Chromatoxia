@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     public float toxinFillRate = 10f; // per second
     public float currentToxin { get; private set; }
 
+    public Animator animator;
+    public GameObject asd;
     // Movement
     private Rigidbody rb;
     private Vector2 movementInput;
@@ -33,15 +35,27 @@ public class PlayerController : MonoBehaviour
 
     void InputHandler()
     {
-        // Movement / actions later
-        float x = Input.GetAxisRaw("Horizontal"); // A/D, Left/Right
-        float z = Input.GetAxisRaw("Vertical");   // W/S, Up/Down
+        float x = Input.GetAxisRaw("Horizontal"); // A/D
+        float z = Input.GetAxisRaw("Vertical");   // W/S
 
         Vector3 dir = new Vector3(x, 0f, z);
 
-        if (dir.sqrMagnitude > 1f) dir.Normalize(); // prevent faster diagonal
+        if (dir.sqrMagnitude > 1f) dir.Normalize();
 
+        // Move player
         transform.position += dir * moveSpeed * Time.deltaTime;
+
+        // ===== ANIMATION =====
+        bool isRunning = dir.sqrMagnitude > 0f;
+        animator.SetBool("Run", isRunning);
+
+        // ===== FLIP SPRITE LEFT/RIGHT =====
+        if (x != 0)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Sign(x) * Mathf.Abs(scale.x); // flips depending on direction
+            transform.localScale = scale;
+        }
     }
 
     public void TakeOxygenDamage(float amount)
@@ -81,5 +95,6 @@ public class PlayerController : MonoBehaviour
         DrainOxygen();
         InputHandler();
     }
+
 }
 

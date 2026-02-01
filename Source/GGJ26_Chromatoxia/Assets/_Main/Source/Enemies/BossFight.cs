@@ -105,7 +105,19 @@ public class BossFight : MonoBehaviour
     }
     void SpikeAttack()
     {
-        Instantiate(spikeAttackPrefab, player.position, Quaternion.identity);
+        int spikeCount = 6;
+
+        for (int i = 0; i < spikeCount; i++)
+        {
+            float radius = Random.Range(1f, 5f);
+            Vector2 randomCircle = Random.insideUnitCircle * radius;
+
+            Vector3 spawnPos = player.position +
+                               new Vector3(randomCircle.x, 0f, randomCircle.y);
+
+            Instantiate(spikeAttackPrefab, spawnPos, Quaternion.identity);
+        }
+
     }
     void ChasingProjectileAttack()
     {

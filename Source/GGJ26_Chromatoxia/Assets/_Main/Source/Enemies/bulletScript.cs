@@ -14,6 +14,10 @@ public class bulletScript : MonoBehaviour
     {
         TryDamagePlayer(GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>());
     }
+    private void Start()
+    {
+        Destroy(gameObject, 3);
+    }
     void TryDamagePlayer(Transform player)
     {
         if (player == null) return;

@@ -46,12 +46,12 @@ public class BossFight : MonoBehaviour
 
             if (!isPhaseTwo)
             {
-                // Phase 1 Å® 1 random attack
+                // Phase 1 ÔøΩÔøΩ 1 random attack
                 DoRandomAttack();
             }
             else
             {
-                // Phase 2 Å® 2 different attacks at once
+                // Phase 2 ÔøΩÔøΩ 2 different attacks at once
                 DoTwoRandomAttacks();
             }
         }

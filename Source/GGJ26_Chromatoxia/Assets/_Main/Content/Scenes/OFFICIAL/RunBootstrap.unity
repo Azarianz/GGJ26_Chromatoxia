@@ -2036,6 +2036,7 @@ MonoBehaviour:
   loseCanvas: {fileID: 533803213}
   loseText: {fileID: 1413034337}
   emptySlotAlpha: 1
+  winReturnDelay: 3
 --- !u!1 &652775207
 GameObject:
   m_ObjectHideFlags: 0
@@ -2309,6 +2310,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8cd7a1793ddfb14092bd0c245279740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseTimeOnEnd: 1
+  autoResetOnSceneLoad: 1
 --- !u!1 &753947548
 GameObject:
   m_ObjectHideFlags: 0
@@ -5666,7 +5669,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd3a634d1a50d4445821f4c67c73ebea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyTypes: 
+  defaultEnemyPool: []
+  enemyPool: []
   enemyHpMult: 1
   enemySpeedMult: 1
   spawnMult: 1
@@ -5674,6 +5678,7 @@ MonoBehaviour:
   lootDrawMult: 1
   dropBonus: 0
   oxygenDrainMult: 1
+  survivalTime: 30
 --- !u!1 &1468851206
 GameObject:
   m_ObjectHideFlags: 0
@@ -5837,45 +5842,49 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1227176950765963621, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -379584932, guid: 61534e3ac5b1c504c9b67f785c58fdbf, type: 3}
     - target: {fileID: 3673087828305676896, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_Name
       value: RandomizerCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 3673087828305676896, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5063280420236156143, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5063280420236156143, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5063280420236156143, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5063280420236156143, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 804.95123
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5063280420236156143, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -225
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6914361998777767844, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6914361998777767844, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6914361998777767844, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1114.9512
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6914361998777767844, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -225
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5913,7 +5922,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488794514}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -6877,6 +6886,8 @@ MonoBehaviour:
   seed: 12345
   currentStep: 0
   clearedNodeIds: []
+  currentNodeId: 
+  currentNodeSceneName: 
 --- !u!1 &1812980554
 GameObject:
   m_ObjectHideFlags: 0

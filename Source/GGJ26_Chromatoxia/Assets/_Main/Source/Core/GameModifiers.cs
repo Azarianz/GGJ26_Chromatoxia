@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnemyType { Normal, Fast, Huge, Ranger, Elite, Boss }
-
 public class GameModifiers : MonoBehaviour
 {
     public static GameModifiers Instance { get; private set; }
 
     [Header("Enemy")]
-    public List<EnemyType> enemyTypes = new();
+    public List<GameObject> defaultEnemyPool = new List<GameObject>();
+    public List<GameObject> enemyPool = new List<GameObject>();
     public float enemyHpMult = 1f;
     public float enemySpeedMult = 1f;
     public float spawnMult = 1f;
@@ -20,6 +19,9 @@ public class GameModifiers : MonoBehaviour
 
     [Header("Oxygen")]
     public float oxygenDrainMult = 1f;
+
+    [Header("Survival Time (Gradually Longer)")]
+    public float survivalTime = 30f;    //Gradually increases
 
     void Awake()
     {
@@ -46,7 +48,9 @@ public class GameModifiers : MonoBehaviour
         dropBonus = 0f;
 
         oxygenDrainMult = 1f;
+        survivalTime = 30f;    //Gradually increases
 
-        enemyTypes.Clear();
+        enemyPool.Clear();
+        enemyPool.AddRange(defaultEnemyPool);   //copy default pool
     }
 }

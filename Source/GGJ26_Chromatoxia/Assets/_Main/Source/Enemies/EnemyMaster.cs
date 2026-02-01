@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public class EnemyMaster : MonoBehaviour
+public class EnemyMaster : MonoBehaviour, IDamageable
 {
     [Header("Base Stats")]
     [SerializeField] public float moveSpeed = 3f;
+    public float currentHP;
+    public float maxHP;
 
     [Header("Combat")]
     [SerializeField] protected GameObject hitbox;
@@ -18,8 +20,13 @@ public class EnemyMaster : MonoBehaviour
 
     public virtual void Awake()
     {
-      
+        InitStat(GameModifiers.Instance.enemySpeedMult * moveSpeed);
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
+    }
+
+    public void InitStat(float speed)
+    {
+        moveSpeed = speed;
     }
 
     // =========================
@@ -81,8 +88,12 @@ public class EnemyMaster : MonoBehaviour
     // =========================
     // Combat
     // =========================
+    public void TakeDamage(int dmg)
+    {
+        currentHP -= dmg;
+        enemyAnim.SetTrigger("enemDamg");
+        if (currentHP <= 0)
+            Destroy(gameObject);
+    }
 
-  
-
- 
 }

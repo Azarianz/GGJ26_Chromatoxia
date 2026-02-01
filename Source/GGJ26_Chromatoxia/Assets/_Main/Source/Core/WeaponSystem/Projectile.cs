@@ -46,9 +46,12 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        var dmg = other.GetComponentInParent<IDamageable>();
-        if (dmg != null)
-            dmg.TakeDamage(damage);
+        if (other.gameObject.CompareTag("Enemy") || 
+            other.GetComponentInParent<IDamageable>() != null)
+        {
+            EnemyMaster enemy = other.gameObject.GetComponent<EnemyMaster>();
+            enemy.TakeDamage(damage);
+        }
 
         Kill();
     }

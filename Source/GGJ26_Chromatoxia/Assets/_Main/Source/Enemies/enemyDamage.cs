@@ -22,6 +22,7 @@ public class enemyDamage : MonoBehaviour
     }
     private void Start()
     {
+        maxHP = GameModifiers.Instance.enemyHpMult * maxHP;
         currentHP = maxHP;
     }
     public void TakeDamage(int damage)

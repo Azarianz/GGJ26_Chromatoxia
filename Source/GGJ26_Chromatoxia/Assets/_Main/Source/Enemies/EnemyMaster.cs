@@ -3,7 +3,6 @@ using UnityEngine;
 public class EnemyMaster : MonoBehaviour
 {
     [Header("Base Stats")]
-    [SerializeField] private int maxHP = 50;
     [SerializeField] public float moveSpeed = 3f;
 
     [Header("Combat")]
@@ -14,12 +13,12 @@ public class EnemyMaster : MonoBehaviour
     [SerializeField] private float separationStrength = 1.5f;
     [SerializeField] private LayerMask enemyLayer;
 
-    protected int currentHP;
+   
     public Transform player;
 
     public virtual void Awake()
     {
-        currentHP = maxHP;
+      
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
@@ -79,16 +78,7 @@ public class EnemyMaster : MonoBehaviour
     // Combat
     // =========================
 
-    public virtual void TakeDamage(int damage)
-    {
-        currentHP -= damage;
+  
 
-        if (currentHP <= 0)
-            Die();
-    }
-
-    protected virtual void Die()
-    {
-        Destroy(gameObject);
-    }
+ 
 }

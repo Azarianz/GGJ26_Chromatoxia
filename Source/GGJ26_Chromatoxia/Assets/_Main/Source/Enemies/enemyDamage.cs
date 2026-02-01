@@ -4,10 +4,25 @@ using UnityEngine;
 
 public class enemyDamage : MonoBehaviour
 {
-    [SerializeField]float currentHP;
-    [SerializeField] float maxHP;
-    // Start is called before the first frame update
-   
+    public float currentHP;
+    public float maxHP;
+    // Start is called before th
+    //
+    //
+    // e first frame update
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.H))
+        {
+            TakeDamage(30);
+            print(currentHP);
+        }
+    }
+    private void Start()
+    {
+        currentHP = maxHP;
+    }
     public void TakeDamage(int damage)
     {
         currentHP -= damage;

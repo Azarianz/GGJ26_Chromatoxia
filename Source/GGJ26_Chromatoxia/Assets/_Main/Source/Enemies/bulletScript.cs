@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public class bulletScript : MonoBehaviour
@@ -8,7 +9,7 @@ public class bulletScript : MonoBehaviour
     [Header("Knockback")]
     [SerializeField] private float knockbackForce = 6f;
     [SerializeField] private float damageDistance = 1f;
-
+    [SerializeField] bool makeItSay;
     private void Update()
     {
         TryDamagePlayer(GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>());
@@ -29,7 +30,10 @@ public class bulletScript : MonoBehaviour
         {
             ApplyDamage(player);
             ApplyKnockback(player);
-            Destroy(gameObject);
+            if (!makeItSay)
+            {
+                Destroy(gameObject);
+            }
            
         }
     }

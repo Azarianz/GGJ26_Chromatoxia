@@ -841,7 +841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1628782526112098578, guid: 8779344a8f1a60e4e8f7c56e7c2e42c1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6139614687796704842, guid: 8779344a8f1a60e4e8f7c56e7c2e42c1, type: 3}
       propertyPath: player
@@ -853,12 +853,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6139614687796704842, guid: 8779344a8f1a60e4e8f7c56e7c2e42c1, type: 3}
       propertyPath: enemyPrefabs.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6139614687796704842, guid: 8779344a8f1a60e4e8f7c56e7c2e42c1, type: 3}
       propertyPath: enemyPrefabs.Array.data[0]
       value: 
       objectReference: {fileID: 1131113889782002152, guid: 14c9cf795f7abfb4a9b7a8952096eb1a, type: 3}
+    - target: {fileID: 6139614687796704842, guid: 8779344a8f1a60e4e8f7c56e7c2e42c1, type: 3}
+      propertyPath: enemyPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 4809991639497244433, guid: 9d2bc43d2fd6c414b810b54468a42faf, type: 3}
     - target: {fileID: 7778530524035025633, guid: 8779344a8f1a60e4e8f7c56e7c2e42c1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

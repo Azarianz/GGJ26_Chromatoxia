@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4599989919566309217}
   - component: {fileID: 3506656150082876053}
   - component: {fileID: 8352315690366126189}
+  - component: {fileID: -8886484826528412245}
   m_Layer: 0
   m_Name: enemyRange
   m_TagString: Untagged
@@ -173,7 +174,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45f63e6616590444ab9114fea62283e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 50
   moveSpeed: 3
   hitbox: {fileID: 5896312515467349003}
   separationRadius: 1.2
@@ -184,6 +184,20 @@ MonoBehaviour:
   player: {fileID: 0}
   stopDistance: 5
   eS2: {fileID: 3297389714354593890}
+--- !u!114 &-8886484826528412245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4809991639497244433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff6597a01c7e07544bc531a3dae1c561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHP: 0
+  maxHP: 5
 --- !u!1 &5896312515467349003
 GameObject:
   m_ObjectHideFlags: 0

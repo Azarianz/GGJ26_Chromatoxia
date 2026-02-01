@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7597681234053469481}
   - component: {fileID: 4561542196348368802}
   - component: {fileID: 5422342324657390081}
+  - component: {fileID: 8228096877689361928}
   m_Layer: 6
   m_Name: enemyPrototype
   m_TagString: Untagged
@@ -172,7 +173,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fd22bf0c8d54404b8d6984004797265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 50
   moveSpeed: 3
   hitbox: {fileID: 6812538855334322730}
   separationRadius: 1.2
@@ -183,6 +183,20 @@ MonoBehaviour:
   player: {fileID: 0}
   hitIndicator: {fileID: 6812538855334322730}
   dm: {fileID: 0}
+--- !u!114 &8228096877689361928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1131113889782002152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff6597a01c7e07544bc531a3dae1c561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHP: 0
+  maxHP: 10
 --- !u!1 &6812538855334322730
 GameObject:
   m_ObjectHideFlags: 0

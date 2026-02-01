@@ -16,7 +16,7 @@ public class RangeEnemy : EnemyMaster
 
         float distanceToPlayer = (player.position - transform.position).magnitude;
 
-        print(distanceToPlayer);
+        //print(distanceToPlayer);
         if (distanceToPlayer < stopDistance)
         {
             if (player == null) return;

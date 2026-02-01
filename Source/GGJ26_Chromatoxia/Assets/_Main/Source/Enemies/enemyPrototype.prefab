@@ -73,8 +73,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff6597a01c7e07544bc531a3dae1c561, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHP: 0
-  maxHP: 50
+  currentHP: 15
+  maxHP: 15
   animDam: {fileID: 431080498108551210}
 --- !u!54 &4271523129882348409
 Rigidbody:

@@ -103,8 +103,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4
-  currentHP: 0
-  maxHP: 0
+  currentHP: 12
+  maxHP: 12
   hitbox: {fileID: 5896312515467349003}
   separationRadius: 1.2
   separationStrength: 1.5

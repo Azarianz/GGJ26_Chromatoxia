@@ -100,9 +100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c56c63058b2cd745a25a353ce9f571e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
-  currentHP: 0
-  maxHP: 0
+  moveSpeed: 4.5
+  currentHP: 25
+  maxHP: 25
   hitbox: {fileID: 0}
   separationRadius: 1.2
   separationStrength: 1.5
@@ -111,7 +111,7 @@ MonoBehaviour:
     m_Bits: 64
   enemyAnim: {fileID: 8793368990714771154}
   player: {fileID: 0}
-  stopDistance: 2
+  stopDistance: 1.5
   damageAMt: 30
   explodepart: {fileID: 2541827523955890797, guid: 45e39dff9eb707b45b4adb1e152e7b7a, type: 3}
 --- !u!54 &2675892125109606284
@@ -190,7 +190,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1718714210206818167}

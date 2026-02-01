@@ -12,7 +12,7 @@ public class suicideEnemy : EnemyMaster
     public override void Awake()
     {
         base.Awake();
-        StartCoroutine(AutoExplodeAfterTime(3f));
+        StartCoroutine(AutoExplodeAfterTime(8f));
     }
 
     private void Update()

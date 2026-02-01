@@ -29,11 +29,16 @@ public class LevelManager : MonoBehaviour
 
     public GameObject hudCanvas;          // HUDCanvas root
 
+    [Header("Loading")]
+    public float minLoadingTime = 1f; // seconds (set to 1)
+
     [Header("Debug")]
     public bool logTransitions = true;
 
     string currentRoomScene;
     bool loading;
+
+    public bool usingKeyword;
 
     void Awake()
     {
@@ -58,6 +63,9 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
+        if (usingKeyword)
+            return;
+
         // When RunBootstrap scene loads, auto-start based on startMode
         if (startMode == BootstrapStartMode.Tutorial) StartTutorial();
         else StartRun();
@@ -85,11 +93,14 @@ public class LevelManager : MonoBehaviour
         Random.InitState(seed);
 
         // Reset run-wide systems
+        GameUIManager.Instance?.HideGameEnd();
+
+        if (InventoryManager.I != null)
+            InventoryManager.I.ResetInventory();
+
         if (GameModifiers.Instance != null)
             GameModifiers.Instance.ResetAll();
 
-        if (InventoryManager.I != null)
-            InventoryManager.I.ResetInventory(); // <-- you will add this
 
         LoadRoom(runStartScene);
     }
@@ -99,6 +110,8 @@ public class LevelManager : MonoBehaviour
         if (loading) return;
 
         if (logTransitions) Debug.Log("[LevelManager] StartTutorial");
+
+        GameUIManager.Instance?.HideGameEnd();
 
         if (GameModifiers.Instance != null)
             GameModifiers.Instance.ResetAll();
@@ -118,7 +131,7 @@ public class LevelManager : MonoBehaviour
     // =========================
     // Room Loading (Additive)
     // =========================
-    public void LoadRoom(string roomScene)
+    public void LoadRoom(string roomScene, bool showHud = true)
     {
         if (loading) return;
 
@@ -128,19 +141,22 @@ public class LevelManager : MonoBehaviour
             return;
         }
 
-        StartCoroutine(LoadRoomRoutine(roomScene));
+        StartCoroutine(LoadRoomRoutine(roomScene, showHud));
     }
 
-    IEnumerator LoadRoomRoutine(string nextRoom)
+    IEnumerator LoadRoomRoutine(string nextRoom, bool showHud)
     {
         loading = true;
 
-        if (logTransitions)
-            Debug.Log($"[LevelManager] LoadRoom '{nextRoom}' (additive). Unload '{currentRoomScene}'");
+        float loadStartTime = Time.unscaledTime; // ⬅️ start timer
 
-        // UI: show loading, hide HUD
+        // IMPORTANT: clear any previous game-end UI
+        if (GameUIManager.Instance != null)
+            GameUIManager.Instance.HideGameEnd();
+
+        // Hide HUD while loading
         SetHudVisible(false);
-        SetLoadingUI(true, 0f, $"Loading {nextRoom}...");
+        SetLoadingUI(true, 0f, $"Loading...");
 
         if (fadeCanvas != null) yield return Fade(1f);
 
@@ -151,38 +167,35 @@ public class LevelManager : MonoBehaviour
         AsyncOperation load = SceneManager.LoadSceneAsync(nextRoom, LoadSceneMode.Additive);
         if (load == null)
         {
-            Debug.LogError($"[LevelManager] Failed to load '{nextRoom}'. Add it to Build Settings.");
-            if (fadeCanvas != null) yield return Fade(0f);
+            Debug.LogError($"[LevelManager] Failed to load '{nextRoom}'.");
             SetLoadingUI(false, 0f);
             loading = false;
             yield break;
         }
 
-        load.allowSceneActivation = true;
-
         while (!load.isDone)
         {
-            // progress is 0..0.9 then completes; clamp for UI
             float p = Mathf.Clamp01(load.progress / 0.9f);
-            SetLoadingUI(true, p, $"Loading {nextRoom}... {Mathf.RoundToInt(p * 100f)}%");
+            SetLoadingUI(true, p, $"Loading...");
             yield return null;
         }
 
         currentRoomScene = nextRoom;
 
-        // Make the room active so Instantiate defaults into the room
         Scene room = SceneManager.GetSceneByName(nextRoom);
         if (room.IsValid())
             SceneManager.SetActiveScene(room);
 
-        // Small safety delay so Awake/Start in new scene can run before HUD appears
-        yield return null;
+        // ⏱️ Enforce minimum loading time
+        float elapsed = Time.unscaledTime - loadStartTime;
+        if (elapsed < minLoadingTime)
+            yield return new WaitForSecondsRealtime(minLoadingTime - elapsed);
 
         if (fadeCanvas != null) yield return Fade(0f);
 
         // UI: hide loading, show HUD
         SetLoadingUI(false, 1f);
-        SetHudVisible(true);
+        SetHudVisible(showHud);
 
         loading = false;
 
@@ -286,6 +299,11 @@ public class LevelManager : MonoBehaviour
 
         fadeCanvas.alpha = target;
         fadeCanvas.blocksRaycasts = target > 0.01f;
+    }
+
+    public void EndToStageSelect()
+    {
+        LoadRoom("StageGraph", false); // your stage graph scene
     }
 
     // Optional getters

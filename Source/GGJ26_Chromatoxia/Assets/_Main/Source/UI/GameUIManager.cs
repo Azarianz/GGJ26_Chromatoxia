@@ -1,7 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // <-- add this if you use TMP_Text
 
 public class GameUIManager : MonoBehaviour
 {
@@ -21,11 +22,20 @@ public class GameUIManager : MonoBehaviour
     public GameObject randomizerEffectCard;
 
     [Header("Inventory UI (6 Slots)")]
-    public Image[] inventorySlotIcons = new Image[6];      // assign left->right
-    public TMP_Text[] inventorySlotCounts = new TMP_Text[6]; // optional (ammo/uses)
+    public Image[] inventorySlotIcons = new Image[6];
+    public TMP_Text[] inventorySlotCounts = new TMP_Text[6];
+
+    [Header("Game End UI")]
+    public GameObject winCanvas;
+    public TMP_Text winText;
+
+    public GameObject loseCanvas;
+    public TMP_Text loseText;
 
     [Range(0f, 1f)]
     public float emptySlotAlpha = 0f;
+
+    public float winReturnDelay = 3f;
 
     private void Awake()
     {
@@ -35,6 +45,9 @@ public class GameUIManager : MonoBehaviour
             return;
         }
         Instance = this;
+
+        // Optional: ensure both are hidden on scene start
+        HideGameEnd();
     }
 
     // ===== UI Update API =====
@@ -95,25 +108,86 @@ public class GameUIManager : MonoBehaviour
             var text = inventorySlotCounts[i];
             var slot = slots[i];
 
+            if (icon == null) continue;
+
             if (slot == null || slot.IsEmpty)
             {
-                // Hide icon
                 icon.sprite = null;
-                icon.color = new Color(1, 1, 1, 0);
+                icon.color = new Color(1, 1, 1, 0f);
 
-                // Clear count
                 if (text) text.text = "";
             }
             else
             {
-                // Show icon
                 icon.sprite = slot.item.icon;
                 icon.color = Color.white;
 
-                // Update count
                 if (text)
                     text.text = slot.current.ToString();
             }
         }
+    }
+    IEnumerator ReturnToStageGraphAfterDelay()
+    {
+        // Pause gameplay but allow UI to update
+        Time.timeScale = 0f;
+
+        float t = 0f;
+        while (t < winReturnDelay)
+        {
+            t += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        Time.timeScale = 1f;
+        HideGameEnd();
+
+        if (RunManager.I != null) RunManager.I.ClearCurrentNode();
+
+        // Go back to stage select
+        LevelManager.I.EndToStageSelect();
+    }
+
+
+    // =====================
+    // Called by GameManager
+    // =====================
+    public void ShowGameEnd(GameEndType type, string reason)
+    {
+        // Always start clean
+        HideGameEnd();
+
+        string baseMsg = (type == GameEndType.Win) ? "ZONE CLEARED" : "GAME OVER";
+        string msg = string.IsNullOrEmpty(reason) ? baseMsg : $"{baseMsg}\n{reason}";
+
+        if (type == GameEndType.Win)
+        {
+            if (winCanvas) winCanvas.SetActive(true);
+            if (winText) winText.text = msg;
+
+            // 🔹 Delay then return to stage graph
+            StartCoroutine(ReturnToStageGraphAfterDelay());
+        }
+        else
+        {
+            if (loseCanvas) loseCanvas.SetActive(true);
+            if (loseText) loseText.text = msg;
+        }
+    }
+
+    public void HideGameEnd()
+    {
+        if (winCanvas) winCanvas.SetActive(false);
+        if (loseCanvas) loseCanvas.SetActive(false);
+    }
+
+    // =====================
+    // Button Hooks
+    // =====================
+    public void OnMenuClicked()
+    {
+        Time.timeScale = 1f;
+        HideGameEnd();
+        LevelManager.I.EndToMenu();
     }
 }

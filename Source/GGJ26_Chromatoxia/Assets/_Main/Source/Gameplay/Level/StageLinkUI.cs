@@ -1,3 +1,4 @@
+// StageLinkUI.cs
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +17,9 @@ public class StageLinkUI : MonoBehaviour
 
     RectTransform rt;
 
+    void Awake() => rt = (RectTransform)transform;
     void OnEnable() => rt = (RectTransform)transform;
+    void OnValidate() => rt = (RectTransform)transform;
 
     void Update()
     {

@@ -1,3 +1,4 @@
+// StageSelectGenerator.cs
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,12 +9,13 @@ public class StageSelectGenerator : MonoBehaviour
     public RectTransform linksParent;
 
     [Header("Prefabs")]
-    public StageNodeUI nodePrefab;
+    public StageNodeUI normalNodePrefab;
+    public StageNodeUI bossNodePrefab;
     public StageLinkUI linkPrefab;
 
     [Header("Layout")]
-    [Min(2)] public int totalSteps = 5;          // includes tutorial + boss columns
-    [Min(1)] public int minNodesPerMidStep = 2;  // between start and end
+    [Min(2)] public int totalSteps = 5;
+    [Min(1)] public int minNodesPerMidStep = 2;
     [Min(1)] public int maxNodesPerMidStep = 3;
 
     public float xStart = -520f;
@@ -21,7 +23,7 @@ public class StageSelectGenerator : MonoBehaviour
 
     public float yMin = -140f;
     public float yMax = 140f;
-    public float minYSpacing = 80f; // prevent overlap
+    public float minYSpacing = 80f;
 
     [Header("Seed (optional)")]
     public bool useSeed = false;
@@ -30,49 +32,77 @@ public class StageSelectGenerator : MonoBehaviour
     [Header("References")]
     public StageSelectController controller;
 
+    [Header("Scene Mapping")]
+    public string tutorialSceneName = "TutorialLevel";
+    public string bossSceneName = "Boss";
+    public string[] midScenePool; // e.g. RunStart, RoomA, RoomB, RoomC
+
+    private void Start()
+    {
+        Generate();
+    }
+
     public void Generate()
     {
-        if (!nodesParent || !linksParent || !nodePrefab || !linkPrefab || !controller)
+        if (!nodesParent || !linksParent || !normalNodePrefab || !bossNodePrefab || !linkPrefab || !controller)
         {
             Debug.LogError("StageSelectGenerator: assign parents/prefabs/controller.");
             return;
         }
 
+        // Force deterministic seed if run exists
+        if (RunManager.I != null && RunManager.I.hasRun)
+        {
+            useSeed = true;
+            seed = RunManager.I.seed;
+        }
+
         if (useSeed) Random.InitState(seed);
 
-        // Clear old
         ClearChildren(nodesParent);
         ClearChildren(linksParent);
 
-        // Build steps list
         var steps = new List<StageSelectController.Step>();
-
         float stepDx = (xEnd - xStart) / (totalSteps - 1);
 
         for (int s = 0; s < totalSteps; s++)
         {
-            int count;
-            if (s == 0 || s == totalSteps - 1) count = 1; // tutorial + boss
-            else count = Random.Range(minNodesPerMidStep, maxNodesPerMidStep + 1);
+            int count = (s == 0 || s == totalSteps - 1)
+                ? 1
+                : Random.Range(minNodesPerMidStep, maxNodesPerMidStep + 1);
 
             float x = xStart + stepDx * s;
             var ys = GenerateYs(count, yMin, yMax, minYSpacing);
 
-            var step = new StageSelectController.Step();
-            step.nodes = new List<StageNodeUI>(count);
+            var step = new StageSelectController.Step
+            {
+                nodes = new List<StageNodeUI>(count)
+            };
+
+            bool isBossStep = (s == totalSteps - 1);
+            var prefab = isBossStep ? bossNodePrefab : normalNodePrefab;
 
             for (int i = 0; i < count; i++)
             {
-                var node = Instantiate(nodePrefab, nodesParent);
+                var node = Instantiate(prefab, nodesParent);
                 node.name = $"Node_S{s}_N{i}";
                 node.nodeId = node.name;
 
                 var rt = (RectTransform)node.transform;
                 rt.anchoredPosition = new Vector2(x, ys[i]);
 
-                // Optional: mark tutorial/boss visually
-                if (s == 0) node.debugLabel = "Tutorial";
-                else if (s == totalSteps - 1) node.debugLabel = "Boss";
+                if (s == 0) node.debugLabel = "TutorialLevel";
+                else if (isBossStep) node.debugLabel = "Boss";
+
+                if (s == 0) node.sceneName = tutorialSceneName;
+                else if (isBossStep) node.sceneName = bossSceneName;
+                else
+                {
+                    if (midScenePool != null && midScenePool.Length > 0)
+                        node.sceneName = midScenePool[Random.Range(0, midScenePool.Length)];
+                    else
+                        node.sceneName = "RunStart";
+                }
 
                 step.nodes.Add(node);
             }
@@ -80,7 +110,6 @@ public class StageSelectGenerator : MonoBehaviour
             steps.Add(step);
         }
 
-        // Create links between adjacent steps (connect ALL to ALL; looks like branches)
         var links = new List<StageLinkUI>();
         for (int s = 0; s < steps.Count - 1; s++)
         {
@@ -95,7 +124,6 @@ public class StageSelectGenerator : MonoBehaviour
                 }
         }
 
-        // Push into controller and refresh visuals
         controller.steps = steps;
         controller.links = links;
         controller.Rebuild();
@@ -105,15 +133,13 @@ public class StageSelectGenerator : MonoBehaviour
     {
         for (int i = parent.childCount - 1; i >= 0; i--)
         {
-            if (Application.isPlaying) Destroy(parent.GetChild(i).gameObject);
-            else DestroyImmediate(parent.GetChild(i).gameObject);
+            if (Application.isPlaying) Object.Destroy(parent.GetChild(i).gameObject);
+            else Object.DestroyImmediate(parent.GetChild(i).gameObject);
         }
     }
 
     static List<float> GenerateYs(int count, float min, float max, float spacing)
     {
-        // Simple greedy placement: sample random y, accept if far enough from others.
-        // Jam-simple and works well for 2–3 nodes/step.
         var ys = new List<float>(count);
 
         int safety = 200;
@@ -121,14 +147,13 @@ public class StageSelectGenerator : MonoBehaviour
         {
             float y = Random.Range(min, max);
             bool ok = true;
+
             for (int i = 0; i < ys.Count; i++)
-            {
                 if (Mathf.Abs(ys[i] - y) < spacing) { ok = false; break; }
-            }
+
             if (ok) ys.Add(y);
         }
 
-        // If we failed due to tight range, fallback to evenly spaced
         if (ys.Count < count)
         {
             ys.Clear();
@@ -137,7 +162,7 @@ public class StageSelectGenerator : MonoBehaviour
             for (int i = 0; i < count; i++) ys.Add(min + step * i);
         }
 
-        ys.Sort(); // looks nicer
+        ys.Sort();
         return ys;
     }
 }

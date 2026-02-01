@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 3888713697238331104}
   - component: {fileID: 3037727449084687764}
   - component: {fileID: 4159096817699867772}
+  - component: {fileID: 2659933428184602125}
+  - component: {fileID: 1177987827723563326}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -27,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 949188520623443266}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -55,6 +57,8 @@ MonoBehaviour:
   oxygenDrainRate: 5
   maxToxin: 100
   toxinFillRate: 10
+  animator: {fileID: 1177987827723563326}
+  asd: {fileID: 0}
 --- !u!65 &3037727449084687764
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -85,7 +89,7 @@ Rigidbody:
   m_GameObject: {fileID: 949188520623443266}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 0.5
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -103,6 +107,39 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &2659933428184602125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949188520623443266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcc57bc4df724ee4286258bcbc8749be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &1177987827723563326
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949188520623443266}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7425993ceaf23724e865411ddada52ed, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2874022049965133985
 GameObject:
   m_ObjectHideFlags: 0

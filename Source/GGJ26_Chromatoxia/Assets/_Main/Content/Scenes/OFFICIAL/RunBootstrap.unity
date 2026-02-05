@@ -1976,6 +1976,7 @@ GameObject:
   m_Component:
   - component: {fileID: 620687819}
   - component: {fileID: 620687820}
+  - component: {fileID: 620687821}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -2013,6 +2014,8 @@ MonoBehaviour:
   armorSlider: {fileID: 1934362372}
   oxygenSlider: {fileID: 385962057}
   toxinSlider: {fileID: 54830100}
+  characterPortrait: {fileID: 1100675648}
+  portraitFX: {fileID: 620687821}
   waveSlider: {fileID: 1082052699}
   randomizerUI: {fileID: 1488794513}
   randomizerListParent: {fileID: 1488794512}
@@ -2037,6 +2040,26 @@ MonoBehaviour:
   loseText: {fileID: 1413034337}
   emptySlotAlpha: 1
   winReturnDelay: 3
+--- !u!114 &620687821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620687818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cda8e8d9ae169b4cb9cfdfa5801e60e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portrait: {fileID: 1100675648}
+  shakeTarget: {fileID: 1100675647}
+  flashDuration: 0.125
+  flashBlinks: 4
+  redStrength: 0.85
+  shakeDuration: 0.08
+  shakeAmplitude: 12
+  shakeFrequency: 35
 --- !u!1 &652775207
 GameObject:
   m_ObjectHideFlags: 0
@@ -3873,7 +3896,7 @@ GameObject:
   - component: {fileID: 1100675649}
   - component: {fileID: 1100675648}
   m_Layer: 5
-  m_Name: Char
+  m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5319,7 +5342,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1342145784}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -5702,7 +5725,8 @@ MonoBehaviour:
   eliteChance: 0
   lootDrawMult: 1
   dropBonus: 0
-  oxygenDrainMult: 1
+  oxygenDrainMultiplier: 1.5
+  toxinGainMultiplier: 4
   survivalTime: 40
 --- !u!1 &1468851206
 GameObject:

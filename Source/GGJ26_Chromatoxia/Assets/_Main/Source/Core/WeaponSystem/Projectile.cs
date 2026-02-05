@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 
@@ -11,17 +12,38 @@ public class Projectile : MonoBehaviour
     Vector3 dir;
     float speed, lifetime, spawnTime;
     int damage;
-    bool hit;
 
-    public void Init(GameObject owner, Vector3 dir, float speed, int damage, float lifetime)
+    bool hit;
+    bool hasExplosion;
+    bool isExplosion;   //hardcoded ASF
+
+    int penetrationRemaining;
+
+    // Prevent hitting the same enemy multiple times
+    readonly HashSet<Collider> hitTargets = new();
+
+    public void Init(
+        GameObject owner,
+        Vector3 dir,
+        float speed,
+        int damage,
+        float lifetime,
+        bool hasExplosion,
+        int penetration = 1
+    )
     {
-        Debug.Log("Owner of projectile: " + (owner != null ? owner.name : "null"));
         this.owner = owner;
         this.dir = dir.normalized;
         this.speed = speed;
         this.damage = damage;
         this.lifetime = lifetime;
+        this.hasExplosion = hasExplosion;
+
+        penetrationRemaining = Mathf.Max(1, penetration);
         spawnTime = Time.time;
+        hit = false;
+        isExplosion = false;
+        hitTargets.Clear();
     }
 
     void Update()
@@ -36,41 +58,80 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Projectile collided with: " + other.name);
+        if (hit) return;
 
-        // Ignore self & projectile collisions
-        if (owner != null && other.transform.IsChildOf(owner.transform) 
-            && !other.gameObject.CompareTag("Projectile"))
-        {
-            Debug.Log("Projectile ignored self collision.");
+        // Ignore self collision
+        if (owner != null &&
+            other.transform.IsChildOf(owner.transform) &&
+            !other.CompareTag("Projectile"))
             return;
-        }
 
-        if (other.gameObject.CompareTag("Enemy") || 
-            other.GetComponentInParent<IDamageable>() != null)
+        // Prevent double-hit on same collider
+        if (hitTargets.Contains(other))
+            return;
+
+        // Damageable target
+        var damageable = other.GetComponentInParent<IDamageable>();
+        if (other.CompareTag("Enemy") || damageable != null)
         {
-            EnemyMaster enemy = other.gameObject.GetComponent<EnemyMaster>();
-            enemy.TakeDamage(damage);
-        }
+            hitTargets.Add(other);
 
-        Kill();
+            // Prefer interface (most flexible)
+            if (damageable != null)
+            {
+                damageable.TakeDamage(damage);
+            }
+            else
+            {
+                // Fallback if you still want EnemyMaster
+                var enemy = other.GetComponentInParent<EnemyMaster>();
+                if (enemy != null)
+                    enemy.TakeDamage(damage);
+                else
+                    Debug.LogWarning($"Hit tagged Enemy but no IDamageable/EnemyMaster found on {other.name}", other);
+            }
+
+            penetrationRemaining--;
+            if (penetrationRemaining <= 0)
+                Kill();
+        }
     }
 
     void Kill()
     {
+
         hit = true;
 
-        // optional hit VFX
+        // Spawn hit VFX
         if (hitVfxPrefab != null)
-            Instantiate(hitVfxPrefab, transform.position, Quaternion.identity);
+        {
+            GameObject hitFx = Instantiate(hitVfxPrefab, transform.position, Quaternion.identity);
 
-        // detach smoke so it can finish naturally
+            if (hasExplosion)
+            {
+                var explosionFx = hitFx.GetComponent<Projectile>();
+                if (explosionFx != null)
+                {
+                    explosionFx.Init(
+                        null,
+                        Vector3.up,
+                        0f,
+                        100,
+                        1.0f,
+                        false,
+                        999 // explosion hits everything once
+                    );
+                    explosionFx.isExplosion = true;
+                }
+            }
+        }
+
+        // Detach smoke
         if (smoke != null)
         {
             smoke.transform.SetParent(null, true);
             smoke.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 
-            // destroy after it finishes
             float t = smoke.main.duration + smoke.main.startLifetime.constantMax;
             Destroy(smoke.gameObject, t);
         }

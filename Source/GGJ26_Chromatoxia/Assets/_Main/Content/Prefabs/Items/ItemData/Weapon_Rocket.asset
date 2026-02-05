@@ -25,3 +25,4 @@ MonoBehaviour:
   projectileSpeed: 40
   projectileLifetime: 6
   damage: 1
+  hasExplosion: 1

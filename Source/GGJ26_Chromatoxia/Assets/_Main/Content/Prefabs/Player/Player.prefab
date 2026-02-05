@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4159096817699867772}
   - component: {fileID: 2659933428184602125}
   - component: {fileID: 1177987827723563326}
+  - component: {fileID: 6136199074761432196}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -54,7 +55,7 @@ MonoBehaviour:
   moveSpeed: 5
   armorMaxHP: 40
   maxOxygen: 100
-  oxygenDrainRate: 0.85
+  oxygenDrainRate: 1
   maxToxin: 100
   toxinFillRate: 10
   animator: {fileID: 1177987827723563326}
@@ -140,6 +141,26 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6136199074761432196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949188520623443266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 655220feabdc5c0418d551c66613c796, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 3888713697238331104}
+  maskOn_WithOxygenCanister: {fileID: 1165878512, guid: cecc24929f87d81458bbe05d33d539bc, type: 3}
+  maskDamaged_WithOxygenCanister: {fileID: -1021935703, guid: cecc24929f87d81458bbe05d33d539bc, type: 3}
+  maskOn_UndamagedArmor: {fileID: 1581978781, guid: cecc24929f87d81458bbe05d33d539bc, type: 3}
+  maskDamaged_NoOxygenCanister: {fileID: 84227825, guid: cecc24929f87d81458bbe05d33d539bc, type: 3}
+  unmasked_Healthy: {fileID: 74226100, guid: cecc24929f87d81458bbe05d33d539bc, type: 3}
+  unmasked_Toxin_0_49: {fileID: 891445968, guid: cecc24929f87d81458bbe05d33d539bc, type: 3}
+  unmasked_Toxin_50: {fileID: -836485661, guid: cecc24929f87d81458bbe05d33d539bc, type: 3}
 --- !u!1 &2874022049965133985
 GameObject:
   m_ObjectHideFlags: 0

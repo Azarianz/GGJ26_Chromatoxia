@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoke: {fileID: 2010157474082911266}
-  hitVfxPrefab: {fileID: 0}
+  hitVfxPrefab: {fileID: 4011017040828074396, guid: ff2bf24ead2c42249b6ad2ce3f88090a, type: 3}
 --- !u!114 &2089308569835219099
 MonoBehaviour:
   m_ObjectHideFlags: 0

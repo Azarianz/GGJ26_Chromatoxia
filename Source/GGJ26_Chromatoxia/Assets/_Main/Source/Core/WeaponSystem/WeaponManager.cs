@@ -30,7 +30,6 @@ public class WeaponManager : MonoBehaviour
     [Tooltip("Flip X when aiming left (recommended).")]
     public bool flipXWhenAimingLeft = true;
 
-
     [Header("Shooting")]
     public bool holdToFire = true;
 
@@ -194,7 +193,7 @@ public class WeaponManager : MonoBehaviour
     {
         if (gun == null)
         {
-            Debug.LogWarning("TryFire: gun is null (not equipped).");
+            //Debug.LogWarning("TryFire: gun is null (not equipped).");
             return;
         }
 
@@ -212,13 +211,13 @@ public class WeaponManager : MonoBehaviour
         bool consumed = inv.TryConsumeAmmo(gun.id, ammoCost);
         if (!consumed)
         {
-            Debug.Log($"TryFire: No ammo or gun not in inventory. id={gun.id}, cost={ammoCost}");
+            //Debug.Log($"TryFire: No ammo or gun not in inventory. id={gun.id}, cost={ammoCost}");
             return;
         }
 
         nextFireTime = Time.time + (1f / Mathf.Max(0.01f, gun.fireRate));
 
-        Debug.Log($"TryFire: Firing gun={gun.id}");
+        //.Log($"TryFire: Firing gun={gun.id}");
         SpawnProjectile();
     }
 
@@ -280,7 +279,9 @@ public class WeaponManager : MonoBehaviour
             dir,
             gun.projectileSpeed,
             gun.damage,
-            gun.projectileLifetime
+            gun.projectileLifetime,
+            gun.hasExplosion,
+            gun.penetration
         );
     }
 }

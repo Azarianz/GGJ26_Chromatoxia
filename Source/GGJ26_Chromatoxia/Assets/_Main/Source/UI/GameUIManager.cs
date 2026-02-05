@@ -13,6 +13,10 @@ public class GameUIManager : MonoBehaviour
     public Slider oxygenSlider;
     public Slider toxinSlider;
 
+    public Image characterPortrait;
+    public PortraitDamageFX portraitFX;
+
+
     [Header("Enemy UI")]
     public Slider waveSlider;
 

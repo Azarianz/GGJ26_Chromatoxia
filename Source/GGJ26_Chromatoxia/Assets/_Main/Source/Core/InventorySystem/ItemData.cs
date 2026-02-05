@@ -28,4 +28,8 @@ public class ItemData : ScriptableObject
     public float projectileSpeed = 20f;
     public float projectileLifetime = 2f;
     public int damage = 1;
+
+    [Header("Projectile")]
+    public bool hasExplosion = false;
+    public int penetration = 1; // how many enemies this projectile can hit
 }

@@ -18,7 +18,8 @@ public class GameModifiers : MonoBehaviour
     public float dropBonus = 0f;
 
     [Header("Oxygen")]
-    public float oxygenDrainMult = 1f;
+    public float oxygenDrainMultiplier = 1f;
+    public float toxinGainMultiplier = 2f;
 
     [Header("Survival Time (Gradually Longer)")]
     public float survivalTime = 30f;    //Gradually increases
@@ -47,7 +48,7 @@ public class GameModifiers : MonoBehaviour
         lootDrawMult = 1f;
         dropBonus = 0f;
 
-        oxygenDrainMult = 1f;
+        oxygenDrainMultiplier = 1f;
         survivalTime = 30f;    //Gradually increases
 
         enemyPool.Clear();

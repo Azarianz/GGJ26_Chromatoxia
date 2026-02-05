@@ -1,9 +1,22 @@
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
+    public bool HasArmor => currentArmorHP > 0f;
+    public bool HasOxygen => currentOxygen > 0f;
+    public bool HasHalfOxygen => currentOxygen > (maxOxygen * 0.5f);
+
+    public bool ArmorIsDamaged =>
+        currentArmorHP >= 0f && currentArmorHP <= (armorMaxHP * 0.5f);
+
+    public float Toxin01 => maxToxin <= 0f ? 0f : currentToxin / maxToxin;
+
+    public float Armor01 => armorMaxHP <= 0f ? 0f : currentArmorHP / armorMaxHP;
+    public bool IsHurt => currentOxygen <= maxOxygen * 0.4f;
+
     // =====================
     // Player Stats
     // =====================
@@ -24,7 +37,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public float currentToxin { get; private set; }
 
     public Animator animator;
-    public GameObject asd;
+    public GameObject asd;  //yo wad this for
     // Movement
     private Rigidbody rb;
     private Vector2 movementInput;
@@ -33,9 +46,25 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if (currentOxygen > 0)
         {
-            currentOxygen = Mathf.Max(0, currentOxygen - val);
-            GameUIManager.Instance?.UpdateOxygen(currentOxygen);
-            return;
+            if (HasArmor)
+            {
+                currentOxygen = Mathf.Max(0, currentOxygen - (val * GameModifiers.Instance.oxygenDrainMultiplier));
+                GameUIManager.Instance?.UpdateOxygen(currentOxygen);
+            }
+            else{
+                currentOxygen = Mathf.Max(0, currentOxygen - (val * (GameModifiers.Instance.oxygenDrainMultiplier * 2)));
+                GameUIManager.Instance?.UpdateOxygen(currentOxygen);
+            }
+        }
+        else
+        {
+            currentToxin = Mathf.Min(maxToxin, currentToxin + (val * (GameModifiers.Instance.toxinGainMultiplier)));
+            GameUIManager.Instance?.UpdateToxin(currentToxin);
+            if(currentToxin >= maxToxin)
+            {
+                // Player dies
+                GameManager.I.Lose("");
+            }
         }
     }
 
@@ -66,6 +95,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void RegisterDamage(float amount)
     {
+        GameUIManager.Instance?.portraitFX?.Play();
+
         if (currentArmorHP > 0)
         {
             currentArmorHP = Mathf.Max(0, currentArmorHP - amount);

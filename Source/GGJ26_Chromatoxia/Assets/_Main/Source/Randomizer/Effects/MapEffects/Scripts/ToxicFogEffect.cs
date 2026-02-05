@@ -15,6 +15,6 @@ public class ToxicFogEffect : RandomEffect
 
     public override void Apply(GameModifiers mods, int stacks)
     {
-        mods.oxygenDrainMult *= oxygenMult;
+        mods.oxygenDrainMultiplier *= oxygenMult;
     }
 }

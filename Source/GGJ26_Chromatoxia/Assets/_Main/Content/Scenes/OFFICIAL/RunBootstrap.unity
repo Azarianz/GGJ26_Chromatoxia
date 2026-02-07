@@ -1764,6 +1764,7 @@ MonoBehaviour:
   - MainMenu
   - RunBootstrap
   - StageGraph
+  debugSeed: 0
 --- !u!224 &504793423 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6418158970461280880, guid: 1d2a511c1c97c594f834b14833e7e65b, type: 3}
@@ -2129,8 +2130,8 @@ MonoBehaviour:
   flashBlinks: 4
   redStrength: 0.85
   shakeDuration: 0.08
-  shakeAmplitude: 12
-  shakeFrequency: 35
+  shakeAmplitude: 18
+  shakeFrequency: 45
 --- !u!1 &652775207
 GameObject:
   m_ObjectHideFlags: 0

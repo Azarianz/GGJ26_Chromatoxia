@@ -42,10 +42,14 @@ public class RandomizerManager : MonoBehaviour
     public bool runOnSceneLoaded = true;
     public List<string> ignoreScenes = new() { "MainMenu", "RunBootstrap" };
 
+    private System.Random rng;
+    [SerializeField] private int debugSeed = 0; // optional, 0 = auto
+
+
     #region Card Functions
     public void DrawRandomCards()
     {
-        int count = Random.Range(minCards, maxCards + 1); // inclusive
+        int count = rng.Next(minCards, maxCards + 1); // max exclusive
         DrawAndApplyCards(count);
         ShowRandomizerUI();
     }
@@ -54,43 +58,33 @@ public class RandomizerManager : MonoBehaviour
     {
         if (count <= 0) return;
 
-        // Combine both pools so a "card" can be either mutation or map effect
         List<RandomEffect> all = new();
         if (mutations != null) all.AddRange(mutations);
         if (mapEffects != null) all.AddRange(mapEffects);
-
         if (all.Count == 0) return;
 
-        // --- prevent duplicates per draw ---
-        // shuffle-able available pool
         List<RandomEffect> available = new(all);
 
-        // don’t try to draw more than we have
-        int draws = Mathf.Min(count, available.Count);
+        int target = Mathf.Min(count, available.Count);
+        int applied = 0;
 
-        for (int i = 0; i < draws; i++)
+        while (applied < target && available.Count > 0)
         {
-            ApplyOneUnique(available);
+            if (TryApplyOneUnique(available))
+                applied++;
         }
     }
 
-    void ApplyOneUnique(List<RandomEffect> available)
+    bool TryApplyOneUnique(List<RandomEffect> available)
     {
-        if (available == null || available.Count == 0) return;
-
-        int idx = Random.Range(0, available.Count);
+        int idx = rng.Next(0, available.Count);
         var effect = available[idx];
-
-        // Remove immediately so it cannot be chosen again this draw
         available.RemoveAt(idx);
 
-        if (effect == null) return;
+        if (effect == null) return false;
 
         int current = stacks.TryGetValue(effect, out int s) ? s : 0;
-
-        // If already active and non-stackable, just skip (since we can't re-pick)
-        if (current > 0 && !effect.stackable)
-            return;
+        if (current > 0 && !effect.stackable) return false;
 
         int next = Mathf.Clamp(current + 1, 1, effect.maxStacks);
         stacks[effect] = next;
@@ -101,11 +95,8 @@ public class RandomizerManager : MonoBehaviour
         effect.Apply(ctx, next);
 
         if (debugLogEffects)
-        {
             Debug.Log($"[Randomizer] Applied {effect.effectName} ({effect.type}) | Stack {next}/{effect.maxStacks}");
-        }
 
-        // Optional UI spawn
         if (cardUIPrefab != null)
         {
             Transform parent = uiListParent != null ? uiListParent : transform;
@@ -113,8 +104,9 @@ public class RandomizerManager : MonoBehaviour
 
             var ui = go.GetComponent<RandomizerCardUI>();
             if (ui != null) ui.Setup(effect, next);
-            else if (debugLogEffects) Debug.LogWarning("[Randomizer] cardUIPrefab has no RandomizerCardUI component.", go);
         }
+
+        return true;
     }
 
 
@@ -246,6 +238,7 @@ public class RandomizerManager : MonoBehaviour
 
     void Awake()
     {
+        // existing canvas init...
         if (randomizerCanvas)
         {
             randomizerCanvas.alpha = 0f;
@@ -253,6 +246,13 @@ public class RandomizerManager : MonoBehaviour
             randomizerCanvas.blocksRaycasts = false;
             randomizerCanvas.gameObject.SetActive(false);
         }
+
+        // Seed RNG once
+        int seed = (debugSeed != 0) ? debugSeed : System.Environment.TickCount;
+        rng = new System.Random(seed);
+
+        if (debugLogEffects)
+            Debug.Log($"[Randomizer] RNG seed = {seed}");
     }
     void OnEnable()
     {
@@ -276,6 +276,7 @@ public class RandomizerManager : MonoBehaviour
 
     public void OnLevelStart()
     {
+        Debug.Log("[Randomizer] Level Start - Drawing Cards");
         // Optional: clear previous UI cards each level
         ClearSpawnedCardsUI();
 

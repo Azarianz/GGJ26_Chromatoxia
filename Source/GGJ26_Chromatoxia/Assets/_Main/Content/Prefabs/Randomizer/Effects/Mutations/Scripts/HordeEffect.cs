@@ -3,7 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "RandomEffects/Mutation/Horde")]
 public class HordeEffect : RandomEffect
 {
-    public float spawnPerStack = 0.30f;
+    public int increasePop = 10;
+    public float spawnDecrTime = 0.30f;
 
     private void OnEnable()
     {
@@ -15,6 +16,7 @@ public class HordeEffect : RandomEffect
 
     public override void Apply(GameModifiers mods, int stacks)
     {
-        mods.spawnMult *= (1f + spawnPerStack * stacks);
+        mods.spawnMult *= (1f + spawnDecrTime * stacks);
+        mods.maxPopulation += increasePop * stacks;
     }
 }

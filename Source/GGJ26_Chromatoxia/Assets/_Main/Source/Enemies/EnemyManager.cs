@@ -25,6 +25,11 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private float timeToLive = 30f;
     private float timeLeft;
 
+    [Header("Population Cap")]
+    [SerializeField] private int maxPopulation = 40;
+    private int currentPopulation = 0;
+
+
     private void Start()
     {
         timeLeft = timeToLive;
@@ -64,15 +69,38 @@ public class EnemyManager : MonoBehaviour
 
     private void SpawnBurst()
     {
+        // Stop entirely if cap reached
+        if (currentPopulation >= maxPopulation)
+            return;
+
         int count = Random.Range(minPerBurst, maxPerBurst + 1);
 
-        for (int i = 0; i < count; i++)
+        // Clamp burst to remaining capacity
+        int allowed = Mathf.Min(count, maxPopulation - currentPopulation);
+
+        for (int i = 0; i < allowed; i++)
         {
             Vector3 spawnPos = GetRandomPointOnRing(player.position, minSpawnRadius, maxSpawnRadius);
             GameObject prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
-            Instantiate(prefab, spawnPos, Quaternion.identity);
+
+            GameObject enemy = Instantiate(prefab, spawnPos, Quaternion.identity);
+
+            currentPopulation++;
+
+            // Hook death callback
+            EnemyMaster em = enemy.GetComponent<EnemyMaster>();
+            if (em != null)
+            {
+                em.OnDeath += OnEnemyDeath;
+            }
         }
     }
+
+    private void OnEnemyDeath(EnemyMaster enemy)
+    {
+        currentPopulation = Mathf.Max(0, currentPopulation - 1);
+    }
+
 
     private Vector3 GetRandomPointOnRing(Vector3 center, float minR, float maxR)
     {

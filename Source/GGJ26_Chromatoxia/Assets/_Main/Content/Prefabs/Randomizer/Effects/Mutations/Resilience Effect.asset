@@ -9,11 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a85fe28de793e6d47b45420bfef0ddc4, type: 3}
-  m_Name: Horde Effect
+  m_Script: {fileID: 11500000, guid: 06e648870dafcc946b8c3cf0594a8771, type: 3}
+  m_Name: Resilience Effect
   m_EditorClassIdentifier: 
-  effectName: Horde
+  effectName: Resilience
+  effectDescription: Enemy Health +20%
+  effectIcon: {fileID: 619612897, guid: 61534e3ac5b1c504c9b67f785c58fdbf, type: 3}
   type: 0
+  isPositive: 0
   stackable: 1
-  maxStacks: 3
-  spawnPerStack: 0.3
+  maxStacks: 5
+  hpIncreasePerStack: 0.4

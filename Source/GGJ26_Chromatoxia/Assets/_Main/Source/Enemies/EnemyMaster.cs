@@ -18,6 +18,9 @@ public class EnemyMaster : MonoBehaviour, IDamageable
    
     public Transform player;
 
+    public System.Action<EnemyMaster> OnDeath;
+
+
     public virtual void Awake()
     {
         InitStat();
@@ -27,6 +30,8 @@ public class EnemyMaster : MonoBehaviour, IDamageable
     public void InitStat()
     {
         moveSpeed = GameModifiers.Instance.enemySpeedMult * moveSpeed;
+        maxHP = GameModifiers.Instance.enemyHpMult * maxHP;
+        currentHP = maxHP;
     }
 
     // =========================
@@ -93,7 +98,13 @@ public class EnemyMaster : MonoBehaviour, IDamageable
         currentHP -= dmg;
         enemyAnim.SetTrigger("enemDamg");
         if (currentHP <= 0)
-            Destroy(gameObject);
+            Die();
+    }
+
+    void Die()
+    {
+        OnDeath?.Invoke(this);
+        Destroy(gameObject);
     }
 
 }

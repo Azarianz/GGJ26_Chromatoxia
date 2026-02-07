@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Elite Effect
   m_EditorClassIdentifier: 
   effectName: Elites
+  effectDescription: Spawn Elites
+  effectIcon: {fileID: 0}
   type: 0
+  isPositive: 0
   stackable: 1
   maxStacks: 3
   eliteChancePerStack: 0.1

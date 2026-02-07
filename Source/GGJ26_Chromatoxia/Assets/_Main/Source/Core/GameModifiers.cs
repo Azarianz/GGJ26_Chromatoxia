@@ -8,6 +8,7 @@ public class GameModifiers : MonoBehaviour
     [Header("Enemy")]
     public List<GameObject> defaultEnemyPool = new List<GameObject>();
     public List<GameObject> enemyPool = new List<GameObject>();
+    public int maxPopulation = 40;
     public float enemyHpMult = 1f;
     public float enemySpeedMult = 1f;
     public float spawnMult = 1f;

@@ -9,11 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06e648870dafcc946b8c3cf0594a8771, type: 3}
-  m_Name: Resilience Effect
+  m_Script: {fileID: 11500000, guid: 9e4068a4d5267fb4a9fb3885572d1ac3, type: 3}
+  m_Name: Frenzy Effect
   m_EditorClassIdentifier: 
-  effectName: Resilience
+  effectName: Frenzy
+  effectDescription: Enemy Speed +15%
+  effectIcon: {fileID: 1554071559, guid: 61534e3ac5b1c504c9b67f785c58fdbf, type: 3}
   type: 0
+  isPositive: 0
   stackable: 1
   maxStacks: 3
-  hpIncreasePerStack: 0.25
+  speedPerStack: 0.2

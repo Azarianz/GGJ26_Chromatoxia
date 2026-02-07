@@ -48,16 +48,6 @@ public class GameManager : MonoBehaviour
 
     void End(GameEndType type, string reason)
     {
-        if (type == GameEndType.Win)
-        {
-            if (GameModifiers.Instance != null)
-            {
-                GameModifiers.Instance.survivalTime += 10f;
-                GameModifiers.Instance.enemySpeedMult += 0.1f;
-                GameModifiers.Instance.spawnMult += 0.15f;
-            }
-        }
-
         if (ended) return;
         ended = true;
 

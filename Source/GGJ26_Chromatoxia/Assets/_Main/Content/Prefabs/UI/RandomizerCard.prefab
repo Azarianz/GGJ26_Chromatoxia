@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5731265346742083069}
   - component: {fileID: 5130763996433007206}
   - component: {fileID: 4220211612403333120}
+  - component: {fileID: 3578231458619436127}
   m_Layer: 0
   m_Name: RandomizerCard
   m_TagString: Untagged
@@ -77,6 +78,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3578231458619436127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1107133163665926857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20fbcb8d7e378ce41934d7eefc3e3856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: {fileID: 106672429060408124}
+  nameText: {fileID: 1848115598167089864}
+  descText: {fileID: 1213049427245379652}
+  frame: {fileID: 4220211612403333120}
+  positiveColor: {r: 0, g: 1, b: 0, a: 1}
+  negativeColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &1307064370928212671
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,8 +130,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -125}
-  m_SizeDelta: {x: 300, y: 250}
+  m_AnchoredPosition: {x: 0, y: -150}
+  m_SizeDelta: {x: 350, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7354062931624244249
 CanvasRenderer:
@@ -169,13 +188,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 64
-  m_fontSizeBase: 64
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -247,7 +266,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: -30}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 350, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3246932745372993605
 CanvasRenderer:
@@ -310,7 +329,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 17
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -398,7 +417,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8394746647706082973}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -411,7 +430,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 619612897, guid: 61534e3ac5b1c504c9b67f785c58fdbf, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

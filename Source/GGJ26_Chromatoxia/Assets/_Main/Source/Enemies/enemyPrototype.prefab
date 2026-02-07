@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fd22bf0c8d54404b8d6984004797265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
+  moveSpeed: 2.8
   currentHP: 0
   maxHP: 0
   hitbox: {fileID: 6812538855334322730}
